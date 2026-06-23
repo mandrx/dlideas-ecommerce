@@ -109,7 +109,7 @@ onMounted(load)
           </div>
           <div class="mb-3">
             <label class="form-label">Your Review</label>
-            <textarea v-model="form.body" class="form-control" rows="3" placeholder="Share your experience…"></textarea>
+            <textarea v-model="form.body" class="form-control" rows="3" placeholder="Share your experience…" minlength="10"></textarea>
           </div>
           <button @click="submit" :disabled="submitting" class="btn btn-primary">
             {{ submitting ? 'Submitting…' : 'Submit Review' }}
