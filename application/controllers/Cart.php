@@ -181,6 +181,12 @@ class Cart extends MY_Controller
             return;
         }
 
+        $existing = $this->db->where('gateway_ref', $intent->id)->get('payments')->row();
+        if ($existing) {
+            redirect('orders/' . $existing->order_id);
+            return;
+        }
+
         $cart  = $this->_get_cart();
         $items = $this->cart_model->get_items($cart->id);
 
@@ -189,16 +195,15 @@ class Cart extends MY_Controller
             return;
         }
 
-        // Shipping stored in session by save_checkout_session() before Stripe redirect
         $session_shipping = $this->session->userdata('checkout_shipping');
-        $shipping_address = is_array($session_shipping) ? $session_shipping : array(
-            'full_name'    => '',
-            'phone'        => '',
-            'address_line' => '',
-            'city'         => '',
-            'postcode'     => '',
-            'state'        => '',
-        );
+
+        if (empty($session_shipping) || empty($session_shipping['address_line'])) {
+            $this->session->set_flashdata('error', 'Shipping information missing. Please try again.');
+            redirect('checkout');
+            return;
+        }
+
+        $shipping_address = $session_shipping;
 
         $coupon_code   = $this->session->userdata('checkout_coupon') ?: ($intent->metadata->coupon_code ?? '');
         $shipping_cost = 10.00;
@@ -225,7 +230,8 @@ class Cart extends MY_Controller
             $discount
         );
 
-        // Record payment rows and mark orders paid
+        $first_order_id = !empty($order_ids) ? $order_ids[0] : null;
+
         foreach ($order_ids as $order_id) {
             $this->db->insert('payments', array(
                 'order_id'    => $order_id,
@@ -237,10 +243,10 @@ class Cart extends MY_Controller
                 'payload'     => json_encode($intent->toArray()),
             ));
             $this->db->update('orders', array('status' => ORDER_PAID), array('id' => $order_id));
+        }
 
-            if ($coupon_code && $validation && $validation['ok']) {
-                $this->coupon_model->redeem($validation['coupon']->id, $this->current_user->id, $order_id);
-            }
+        if ($coupon_code && $validation && $validation['ok'] && $first_order_id) {
+            $this->coupon_model->redeem($validation['coupon']->id, $this->current_user->id, $first_order_id);
         }
 
         // Clean up session and cart

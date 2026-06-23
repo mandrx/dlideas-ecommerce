@@ -376,12 +376,16 @@ class Api extends MY_Controller
             return;
         }
 
+        $idempotency_key = 'pi_' . $user_id . '_' . md5(json_encode(array_map(function($item) {
+            return ['id' => $item->id, 'qty' => $item->quantity];
+        }, $items)));
+
         $intent = $this->payment->create_payment_intent($total_cents, null, [
             'user_id'       => $user_id,
             'coupon_code'   => $coupon_code ?: '',
             'shipping_cost' => $shipping_cost,
             'discount'      => $discount,
-        ]);
+        ], $idempotency_key);
 
         $this->_json([
             'client_secret'   => $intent->client_secret,

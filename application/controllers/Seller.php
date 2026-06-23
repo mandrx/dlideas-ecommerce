@@ -175,12 +175,19 @@ class Seller extends MY_Controller
             if ($order->status === ORDER_PROCESSING || $order->status === ORDER_PAID) {
                 $update['status'] = ORDER_SHIPPED;
             }
+            $this->db->trans_start();
             $this->db->update('orders', $update, array('id' => $order->id));
             if ($tracking) {
                 $this->db->update('shipments', array(
                     'tracking_number' => $tracking,
                     'status'          => 'in_transit',
                 ), array('order_id' => $order->id));
+            }
+            $this->db->trans_complete();
+            if ($this->db->trans_status() === FALSE) {
+                $this->session->set_flashdata('error', 'Failed to save tracking info.');
+                redirect('seller/orders/' . $id);
+                return;
             }
             $this->redirect_with_message('seller/orders', 'Order updated.');
         }

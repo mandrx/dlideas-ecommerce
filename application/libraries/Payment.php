@@ -20,14 +20,16 @@ class Payment
         $this->webhook_secret = $this->CI->config->item('stripe_webhook_secret');
     }
 
-    public function create_payment_intent($amount_cents, $currency = null, $metadata = [])
+    public function create_payment_intent($amount_cents, $currency = null, $metadata = [], $idempotency_key = null)
     {
         $currency = $currency ?? $this->CI->config->item('currency');
-        return PaymentIntent::create([
+        $params   = [
             'amount'   => $amount_cents,
             'currency' => $currency,
             'metadata' => $metadata,
-        ]);
+        ];
+        $options = $idempotency_key ? ['idempotency_key' => $idempotency_key] : [];
+        return PaymentIntent::create($params, $options);
     }
 
     public function retrieve_payment_intent($id)

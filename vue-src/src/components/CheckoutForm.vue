@@ -83,7 +83,13 @@ async function applyCoupon() {
 
 async function pay() {
   payError.value = ''
-  paying.value   = true
+
+  if (!form.value.full_name || !form.value.address_line || !form.value.city || !form.value.postcode || !form.value.state) {
+    payError.value = 'Please fill in all shipping fields.'
+    return
+  }
+
+  paying.value = true
 
   try {
     const body = new URLSearchParams({
@@ -116,6 +122,10 @@ async function pay() {
     })
     const saveData = await saveRes.json()
     if (saveData.csrf) { csrfName = saveData.csrf.name; csrfHash = saveData.csrf.hash }
+    if (!saveData.ok) {
+      payError.value = saveData.error || 'Failed to save checkout session.'
+      return
+    }
 
     const { error, paymentIntent } = await stripe.value.confirmCardPayment(data.client_secret, {
       payment_method: {
