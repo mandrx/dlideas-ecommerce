@@ -5,4 +5,7 @@
     <?php $this->load->view($content_view, get_defined_vars()); ?>
 </main>
 <?php $this->load->view('partials/footer'); ?>
-<?php if (!empty($scripts)) $this->load->view('partials/vue_scripts', array('scripts' => $scripts)); ?>
+<?php
+$_scripts = array_merge(['search'], !empty($scripts) ? $scripts : []);
+$this->load->view('partials/vue_scripts', array('scripts' => $_scripts));
+?>

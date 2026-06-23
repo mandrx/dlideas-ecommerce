@@ -1,2 +1,5 @@
-// LiveSearch entry — component added in Task 3
-console.log('search entry loaded')
+import { createApp } from 'vue'
+import LiveSearch from '../components/LiveSearch.vue'
+
+const el = document.getElementById('live-search')
+if (el) createApp(LiveSearch).mount(el)
