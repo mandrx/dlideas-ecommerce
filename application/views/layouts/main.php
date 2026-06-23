@@ -1,0 +1,8 @@
+<?php $this->load->view('partials/header', array('page_title' => isset($page_title) ? $page_title : '')); ?>
+<?php $this->load->view('partials/nav'); ?>
+<main class="container py-4">
+    <?php $this->load->view('partials/flash_messages'); ?>
+    <?php $this->load->view($content_view, get_defined_vars()); ?>
+</main>
+<?php $this->load->view('partials/footer'); ?>
+<?php if (!empty($scripts)) $this->load->view('partials/vue_scripts', array('scripts' => $scripts)); ?>
