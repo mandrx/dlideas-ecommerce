@@ -75,7 +75,8 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'          => '',
-	'hostname'     => getenv('DB_HOST') ?: 'localhost',
+	'hostname'     => getenv('DB_HOST') ?: '127.0.0.1',
+	'port'         => getenv('DB_PORT') ?: 13306,
 	'username'     => getenv('DB_USER') ?: 'root',
 	'password'     => getenv('DB_PASS') ?: '',
 	'database'     => getenv('DB_NAME') ?: 'ci3_ecomm',
