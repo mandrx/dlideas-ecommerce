@@ -68,6 +68,7 @@ $route['admin/reviews/(:num)/reject']   = 'admin/reject_review/$1';
 // Internal JSON API (for Vue components)
 $route['api/search']                    = 'api/search';
 $route['api/cart/summary']              = 'api/cart_summary';
+$route['api/coupon/apply']              = 'api/apply_coupon';
 $route['api/product/(:num)/reviews/submit'] = 'api/submit_review/$1';
 $route['api/product/(:num)/reviews']    = 'api/reviews/$1';
 $route['api/shipping/rates']            = 'api/shipping_rates';

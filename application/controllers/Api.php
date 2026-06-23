@@ -274,6 +274,151 @@ class Api extends MY_Controller
         ], 201);
     }
 
+    // GET /api/cart/summary
+    public function cart_summary()
+    {
+        $this->load->model('cart_model');
+        $user_id    = $this->current_user ? $this->current_user->id : null;
+        $session_id = $this->session->session_id;
+        $cart  = $this->cart_model->get_or_create($session_id, $user_id);
+        $items = $this->cart_model->get_items($cart->id);
+
+        $subtotal = 0;
+        $out      = [];
+        foreach ($items as $item) {
+            $unit      = $item->sale_price ?: $item->price;
+            $line      = $unit * $item->quantity;
+            $subtotal += $line;
+            $out[]     = [
+                'id'         => (int)$item->id,
+                'name'       => $item->name,
+                'image'      => $item->image ? base_url($item->image) : null,
+                'unit_price' => (float)$unit,
+                'quantity'   => (int)$item->quantity,
+                'line_total' => (float)$line,
+                'store_name' => $item->store_name,
+            ];
+        }
+
+        $this->_json([
+            'items'      => $out,
+            'subtotal'   => (float)$subtotal,
+            'item_count' => count($out),
+        ]);
+    }
+
+    // POST /api/coupon/apply
+    // Body: { coupon_code, subtotal }
+    public function apply_coupon()
+    {
+        if (!$this->current_user) {
+            $this->_json(['ok' => false, 'error' => 'Login required'], 401);
+            return;
+        }
+        $this->load->model('coupon_model');
+        $code     = $this->input->post('coupon_code');
+        $subtotal = (float) $this->input->post('subtotal');
+        $result   = $this->coupon_model->validate($code, $this->current_user->id, $subtotal);
+
+        $resp = ['ok' => $result['ok'], 'csrf' => $this->_new_csrf()];
+        if ($result['ok']) {
+            $resp['discount']    = (float)$result['discount'];
+            $resp['coupon_code'] = strtoupper($code);
+        } else {
+            $resp['error'] = $result['error'];
+        }
+        $this->_json($resp);
+    }
+
+    // POST /api/payment/intent
+    // Body: { coupon_code? }
+    public function payment_intent()
+    {
+        if (!$this->current_user) {
+            $this->_json(['error' => 'Login required'], 401);
+            return;
+        }
+
+        $this->load->model('cart_model');
+        $this->load->model('coupon_model');
+        $this->load->library('payment');
+
+        $user_id    = $this->current_user->id;
+        $session_id = $this->session->session_id;
+        $cart  = $this->cart_model->get_or_create($session_id, $user_id);
+        $items = $this->cart_model->get_items($cart->id);
+
+        if (empty($items)) {
+            $this->_json(['error' => 'Cart is empty'], 422);
+            return;
+        }
+
+        $subtotal = 0;
+        foreach ($items as $item) {
+            $unit      = $item->sale_price ?: $item->price;
+            $subtotal += $unit * $item->quantity;
+        }
+
+        $shipping_cost = 10.00;
+        $discount      = 0.00;
+        $coupon_code   = $this->input->post('coupon_code');
+
+        if ($coupon_code) {
+            $validation = $this->coupon_model->validate($coupon_code, $user_id, $subtotal);
+            if ($validation['ok']) {
+                $discount = $validation['discount'];
+            }
+        }
+
+        $total_cents = (int) round(($subtotal + $shipping_cost - $discount) * 100);
+        if ($total_cents < 50) {
+            $this->_json(['error' => 'Order total too low for payment processing'], 422);
+            return;
+        }
+
+        $intent = $this->payment->create_payment_intent($total_cents, null, [
+            'user_id'       => $user_id,
+            'coupon_code'   => $coupon_code ?: '',
+            'shipping_cost' => $shipping_cost,
+            'discount'      => $discount,
+        ]);
+
+        $this->_json([
+            'client_secret'   => $intent->client_secret,
+            'publishable_key' => $this->payment->get_publishable_key(),
+            'total'           => $subtotal + $shipping_cost - $discount,
+            'csrf'            => $this->_new_csrf(),
+        ]);
+    }
+
+    // POST /api/webhook/stripe
+    public function stripe_webhook()
+    {
+        $payload    = file_get_contents('php://input');
+        $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'] ?? '';
+
+        $this->load->library('payment');
+        $this->load->model('order_model');
+
+        try {
+            $event = $this->payment->construct_webhook_event($payload, $sig_header);
+        } catch (\Exception $e) {
+            $this->output->set_status_header(400)->set_output('Webhook error: ' . $e->getMessage());
+            return;
+        }
+
+        if ($event->type === 'payment_intent.succeeded') {
+            $intent   = $event->data->object;
+            $order_id = $intent->metadata->order_id ?? null;
+            if ($order_id) {
+                $this->db->update('orders',   ['status' => ORDER_PAID], ['id' => $order_id]);
+                $this->db->update('payments', ['status' => 'paid', 'paid_at' => date('Y-m-d H:i:s')], ['gateway_ref' => $intent->id]);
+            }
+        }
+
+        $this->output->set_status_header(200)->set_output(json_encode(['received' => true]));
+    }
+
     // --- Helpers ---
 
     private function _require_seller_json()
