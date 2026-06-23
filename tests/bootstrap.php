@@ -18,3 +18,13 @@ define('ENVIRONMENT', 'testing');
 
 // Load constants config manually
 require_once APPPATH . 'config/constants.php';
+
+// Minimal CI3 stubs so model files can be included without the full framework
+if (!class_exists('MY_Model')) {
+    class MY_Model {
+        protected $db;
+        protected $table   = '';
+        protected $primary = 'id';
+        public function __construct() {}
+    }
+}

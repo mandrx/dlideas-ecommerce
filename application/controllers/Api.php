@@ -200,6 +200,80 @@ class Api extends MY_Controller
         $this->_json(['results' => $rows]);
     }
 
+    // GET /api/product/:id/reviews
+    public function reviews($product_id)
+    {
+        $this->load->model('review_model');
+        $product_id = (int) $product_id;
+
+        $reviews = $this->review_model->get_for_product($product_id);
+        $can_review  = false;
+        $has_reviewed = false;
+
+        if ($this->current_user) {
+            $has_reviewed = $this->review_model->has_reviewed($this->current_user->id, $product_id);
+            $can_review   = $this->review_model->can_review($this->current_user->id, $product_id);
+        }
+
+        $this->_json([
+            'reviews'      => array_map(function($r) {
+                return [
+                    'id'            => (int)$r->id,
+                    'rating'        => (int)$r->rating,
+                    'body'          => $r->body,
+                    'reviewer_name' => $r->reviewer_name,
+                    'created_at'    => $r->created_at,
+                ];
+            }, $reviews),
+            'can_review'   => $can_review,
+            'has_reviewed' => $has_reviewed,
+        ]);
+    }
+
+    // POST /api/product/:id/reviews/submit
+    public function submit_review($product_id)
+    {
+        if (!$this->current_user) {
+            $this->_json(['error' => 'Login required'], 401);
+            return;
+        }
+
+        $product_id = (int) $product_id;
+        $this->load->model('review_model');
+
+        if (!$this->review_model->can_review($this->current_user->id, $product_id)) {
+            $this->_json(['error' => 'You can only review products from delivered orders you have not yet reviewed.'], 403);
+            return;
+        }
+
+        $rating = (int) $this->input->post('rating');
+        $body   = trim($this->input->post('body'));
+
+        if ($rating < 1 || $rating > 5) {
+            $this->_json(['error' => 'Rating must be 1–5'], 422);
+            return;
+        }
+        if (strlen($body) < 10) {
+            $this->_json(['error' => 'Review must be at least 10 characters'], 422);
+            return;
+        }
+
+        $this->review_model->insert([
+            'product_id' => $product_id,
+            'user_id'    => $this->current_user->id,
+            'rating'     => $rating,
+            'body'       => $body,
+            'status'     => REVIEW_PENDING,
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        $this->_json([
+            'success' => true,
+            'message' => 'Review submitted! It will appear after admin approval.',
+            'csrf'    => $this->_new_csrf(),
+        ], 201);
+    }
+
     // --- Helpers ---
 
     private function _require_seller_json()
