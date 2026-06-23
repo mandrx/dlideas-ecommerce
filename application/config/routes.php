@@ -30,8 +30,9 @@ $route['cart']               = 'cart/index';
 $route['cart/add']           = 'cart/add';
 $route['cart/remove/(:num)'] = 'cart/remove/$1';
 $route['cart/update']        = 'cart/update';
-$route['checkout']           = 'cart/checkout';
-$route['checkout/confirm']   = 'cart/confirm';
+$route['checkout']                      = 'cart/checkout';
+$route['cart/save-checkout-session']    = 'cart/save_checkout_session';
+$route['checkout/confirm']              = 'cart/confirm';
 
 // Buyer orders
 $route['orders']             = 'order/index';

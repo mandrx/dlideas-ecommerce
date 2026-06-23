@@ -102,6 +102,21 @@ async function pay() {
       return
     }
 
+    // Persist shipping + coupon to CI3 session before Stripe redirect
+    // (sessionStorage is browser-only; the server-side confirm() reads from session)
+    const saveBody = new URLSearchParams({
+      shipping:    JSON.stringify(form.value),
+      coupon_code: couponApplied.value ? couponCode.value : '',
+      [csrfName]:  csrfHash,
+    })
+    const saveRes = await fetch('/cart/save-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: saveBody,
+    })
+    const saveData = await saveRes.json()
+    if (saveData.csrf) { csrfName = saveData.csrf.name; csrfHash = saveData.csrf.hash }
+
     const { error, paymentIntent } = await stripe.value.confirmCardPayment(data.client_secret, {
       payment_method: {
         card: cardWidget.value,
@@ -114,8 +129,6 @@ async function pay() {
       return
     }
 
-    sessionStorage.setItem('checkout_shipping', JSON.stringify(form.value))
-    sessionStorage.setItem('checkout_coupon', couponApplied.value ? couponCode.value : '')
     window.location.href = `/checkout/confirm?payment_intent=${paymentIntent.id}`
   } catch (e) {
     payError.value = 'Network error. Please try again.'
