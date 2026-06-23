@@ -11,6 +11,9 @@ if (!function_exists('format_currency')) {
 if (!function_exists('format_date')) {
     function format_date($datetime, $format = 'M j, Y')
     {
+        if (empty($datetime) || strtotime($datetime) === false) {
+            return $datetime;
+        }
         return date($format, strtotime($datetime));
     }
 }
@@ -18,6 +21,9 @@ if (!function_exists('format_date')) {
 if (!function_exists('format_datetime')) {
     function format_datetime($datetime)
     {
+        if (empty($datetime) || strtotime($datetime) === false) {
+            return $datetime;
+        }
         return date('M j, Y g:i A', strtotime($datetime));
     }
 }
