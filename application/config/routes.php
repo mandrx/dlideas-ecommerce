@@ -48,6 +48,8 @@ $route['seller/products/delete/(:num)'] = 'seller/delete_product/$1';
 $route['seller/orders']                 = 'seller/orders';
 $route['seller/orders/(:num)']          = 'seller/order_detail/$1';
 $route['seller/store']                  = 'seller/store_settings';
+$route['seller/store-settings']         = 'seller/store_settings';
+$route['seller/store-settings/save']    = 'seller/save_store_settings';
 
 // Admin panel
 $route['admin']                         = 'admin/dashboard';
