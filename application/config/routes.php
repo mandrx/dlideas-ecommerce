@@ -13,6 +13,11 @@ $route['logout']             = 'auth/logout';
 $route['apply-seller']       = 'auth/apply_seller';
 $route['forgot-password']    = 'auth/forgot_password';
 $route['reset-password/(:any)'] = 'auth/reset_password/$1';
+$route['login/post']                    = 'auth/login_post';
+$route['register/post']                 = 'auth/register_post';
+$route['apply-seller/post']             = 'auth/apply_seller_post';
+$route['forgot-password/post']          = 'auth/forgot_password_post';
+$route['reset-password/(:any)/post']    = 'auth/reset_password_post/$1';
 
 // Public shop
 $route['shop']               = 'shop/index';
