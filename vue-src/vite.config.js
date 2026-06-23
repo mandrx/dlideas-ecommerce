@@ -9,8 +9,9 @@ export default defineConfig({
     emptyOutDir: false,
     rollupOptions: {
       input: {
-        search:  resolve(__dirname, 'src/entries/search.js'),
-        product: resolve(__dirname, 'src/entries/product.js'),
+        search:   resolve(__dirname, 'src/entries/search.js'),
+        product:  resolve(__dirname, 'src/entries/product.js'),
+        checkout: resolve(__dirname, 'src/entries/checkout.js'),
       },
       output: {
         entryFileNames: '[name].js',
