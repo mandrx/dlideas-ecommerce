@@ -4,7 +4,7 @@
          verbose="true">
     <testsuites>
         <testsuite name="CI3 Ecomm Tests">
-            <directory>tests</directory>
+            <directory suffix="test.php">tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>
