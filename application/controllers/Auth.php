@@ -61,6 +61,10 @@ class Auth extends MY_Controller
 
         $redirect = $this->session->userdata('redirect_after_login') ?: '/';
         $this->session->unset_userdata('redirect_after_login');
+        // Prevent open redirect: reject absolute URLs and protocol-relative URLs
+        if ($redirect && (strpos($redirect, '://') !== false || strpos($redirect, '//') === 0)) {
+            $redirect = '/';
+        }
         redirect($redirect);
     }
 
@@ -224,14 +228,12 @@ class Auth extends MY_Controller
 
     private function _send_reset_email($to_email, $to_name, $reset_url)
     {
-        $this->load->config('email');
-        $this->email->initialize($this->config->config);
         $this->email->to($to_email);
         $this->email->subject('Password Reset — CI3 Shop');
         $this->email->message(
             '<p>Hi ' . htmlspecialchars($to_name) . ',</p>' .
             '<p>Click the link below to reset your password. This link expires in 1 hour.</p>' .
-            '<p><a href="' . $reset_url . '">' . $reset_url . '</a></p>'
+            '<p><a href="' . $reset_url . '">' . htmlspecialchars($reset_url) . '</a></p>'
         );
         $this->email->send();
     }

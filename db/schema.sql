@@ -223,5 +223,6 @@ CREATE TABLE `coupon_uses` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Seed: default admin user (password: Admin@1234)
+-- IMPORTANT: This seed hash is for the string 'password'. Run Task 11 Step 2 to set a proper Admin@1234 hash before using.
 INSERT INTO `users` (`email`, `password`, `full_name`, `role`, `status`) VALUES
 ('admin@ci3ecomm.local', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Admin', 'admin', 'active');
