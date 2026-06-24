@@ -57,17 +57,17 @@
         <div style="margin-bottom:var(--space-5);">
             <?php if ($product->sale_price): ?>
                 <span style="font-family:'Baloo 2','Nunito',sans-serif;font-size:2rem;font-weight:900;color:var(--primary);">
-                    RM <?= number_format($product->sale_price, 2) ?>
+                    S$ <?= number_format($product->sale_price, 2) ?>
                 </span>
                 <span style="font-size:1.1rem;color:var(--text-muted);text-decoration:line-through;margin-left:var(--space-2);">
-                    RM <?= number_format($product->price, 2) ?>
+                    S$ <?= number_format($product->price, 2) ?>
                 </span>
                 <span class="dl-badge-sale" style="position:relative;top:0;left:0;margin-left:var(--space-2);display:inline-block;">
                     <?= round((1 - $product->sale_price / $product->price) * 100) ?>% OFF
                 </span>
             <?php else: ?>
                 <span style="font-family:'Baloo 2','Nunito',sans-serif;font-size:2rem;font-weight:900;color:var(--primary);">
-                    RM <?= number_format($product->price, 2) ?>
+                    S$ <?= number_format($product->price, 2) ?>
                 </span>
             <?php endif; ?>
         </div>

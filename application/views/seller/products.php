@@ -44,8 +44,8 @@
             </a>
         </td>
         <td style="color:var(--text-muted);font-size:0.88rem;"><?= htmlspecialchars($p->category_name ?? '—') ?></td>
-        <td style="font-family:'Baloo 2','Nunito',sans-serif;font-weight:700;">RM <?= number_format($p->price, 2, '.', ',') ?></td>
-        <td style="color:var(--text-muted);"><?= $p->sale_price ? 'RM ' . number_format($p->sale_price, 2, '.', ',') : '—' ?></td>
+        <td style="font-family:'Baloo 2','Nunito',sans-serif;font-weight:700;">S$ <?= number_format($p->price, 2, '.', ',') ?></td>
+        <td style="color:var(--text-muted);"><?= $p->sale_price ? 'S$ ' . number_format($p->sale_price, 2, '.', ',') : '—' ?></td>
         <td style="font-weight:700;<?= $p->stock <= 3 && $p->stock > 0 ? 'color:oklch(42% 0.15 65);' : ($p->stock <= 0 ? 'color:var(--danger);' : '') ?>">
             <?= $p->stock ?>
         </td>

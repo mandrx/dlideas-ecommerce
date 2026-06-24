@@ -55,6 +55,17 @@
  */
 	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
 
+// Load .env file
+$_env_file = __DIR__ . '/.env';
+if (file_exists($_env_file)) {
+    foreach (file($_env_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $_env_line) {
+        if ($_env_line[0] === '#' || strpos($_env_line, '=') === false) continue;
+        [$_env_k, $_env_v] = explode('=', $_env_line, 2);
+        putenv(trim($_env_k) . '=' . trim($_env_v));
+    }
+    unset($_env_file, $_env_line, $_env_k, $_env_v);
+}
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

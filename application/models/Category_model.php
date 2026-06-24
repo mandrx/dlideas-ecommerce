@@ -26,6 +26,14 @@ class Category_model extends MY_Model
             ->result();
     }
 
+    public function get_all()
+    {
+        return $this->db
+            ->order_by('sort_order ASC, name ASC')
+            ->get($this->table)
+            ->result();
+    }
+
     public function get_dropdown()
     {
         $rows = $this->get_all_with_parent();

@@ -18,7 +18,7 @@
                     <div class="col-sm-8">
                         <label class="form-label" style="font-weight:800;">Name <span style="color:var(--danger);">*</span></label>
                         <input type="text" name="name" class="form-control"
-                               value="<?= htmlspecialchars(set_value('name', $category ? $category->name : '')) ?>"
+                               value="<?= set_value('name', $category ? $category->name : '') ?>"
                                placeholder="e.g. Toys &amp; Games" required maxlength="100">
                         <?php if (form_error('name')): ?>
                         <p style="color:var(--danger);font-size:0.8rem;font-weight:700;margin-top:4px;"><?= form_error('name') ?></p>

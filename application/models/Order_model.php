@@ -109,6 +109,17 @@ class Order_model extends MY_Model
         return $this->db->where('store_id', $store_id)->count_all_results($this->table);
     }
 
+    public function count_pending_for_seller($store_id)
+    {
+        return $this->db->where('store_id', $store_id)->where('status', ORDER_PENDING)->count_all_results($this->table);
+    }
+
+    public function revenue_for_seller($store_id)
+    {
+        $row = $this->db->select_sum('total')->where('store_id', $store_id)->get($this->table)->row();
+        return $row ? (float) $row->total : 0.0;
+    }
+
     public function get_detail_for_seller($order_id, $store_id)
     {
         return $this->db

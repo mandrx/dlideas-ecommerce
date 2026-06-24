@@ -1,31 +1,43 @@
-<h2 class="mb-4">All Orders <small class="text-muted fs-6">(<?= $total ?>)</small></h2>
+<div class="dl-page-header">
+    <div>
+        <h2>All Orders</h2>
+        <p class="dl-page-subtitle"><?= $total ?> total order<?= $total !== 1 ? 's' : '' ?></p>
+    </div>
+</div>
 
 <div class="table-responsive">
-<table class="table table-hover align-middle">
-    <thead class="table-light">
-        <tr><th>#</th><th>Buyer</th><th>Store</th><th>Total</th><th>Status</th><th>Date</th></tr>
+<table class="dl-orders-table">
+    <thead>
+        <tr>
+            <th>Order #</th>
+            <th>Buyer</th>
+            <th>Store</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Date</th>
+        </tr>
     </thead>
     <tbody>
     <?php foreach ($orders as $o): ?>
     <?php
-    $badge = match($o->status) {
-        'pending'    => 'warning text-dark',
-        'paid'       => 'info',
-        'processing' => 'primary',
-        'shipped'    => 'primary',
-        'delivered'  => 'success',
-        'cancelled'  => 'secondary',
-        'refunded'   => 'danger',
-        default      => 'secondary',
+    $status_class = match($o->status) {
+        'pending'    => 'pending',
+        'paid'       => 'paid',
+        'processing' => 'processing',
+        'shipped'    => 'shipped',
+        'delivered'  => 'delivered',
+        'cancelled'  => 'cancelled',
+        'refunded'   => 'refunded',
+        default      => 'cancelled',
     };
     ?>
     <tr>
-        <td>#<?= $o->id ?></td>
-        <td><?= htmlspecialchars($o->buyer_name) ?></td>
-        <td><?= htmlspecialchars($o->store_name) ?></td>
-        <td>RM <?= number_format($o->total, 2) ?></td>
-        <td><span class="badge bg-<?= $badge ?>"><?= ucfirst($o->status) ?></span></td>
-        <td><?= date('d M Y', strtotime($o->created_at)) ?></td>
+        <td><span class="dl-order-id">#<?= $o->id ?></span></td>
+        <td style="font-weight:700;color:var(--text-dark);"><?= htmlspecialchars($o->buyer_name) ?></td>
+        <td style="color:var(--text-muted);font-size:0.88rem;"><?= htmlspecialchars($o->store_name) ?></td>
+        <td><span class="dl-order-total">S$ <?= number_format($o->total, 2) ?></span></td>
+        <td><span class="dl-status-badge dl-status-badge--<?= $status_class ?>"><?= ucfirst($o->status) ?></span></td>
+        <td style="color:var(--text-muted);font-size:0.85rem;"><?= date('d M Y', strtotime($o->created_at)) ?></td>
     </tr>
     <?php endforeach; ?>
     </tbody>

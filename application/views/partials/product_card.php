@@ -30,9 +30,9 @@ $out        = ($product->stock <= 0);
         </h3>
         <div class="dl-product-bottom">
             <div>
-                <span class="dl-price">RM <?= number_format($display, 2) ?></span>
+                <span class="dl-price">S$ <?= number_format($display, 2) ?></span>
                 <?php if ($on_sale): ?>
-                    <span class="dl-price-original">RM <?= number_format($product->price, 2) ?></span>
+                    <span class="dl-price-original">S$ <?= number_format($product->price, 2) ?></span>
                 <?php endif; ?>
             </div>
             <?php if (!$out): ?>

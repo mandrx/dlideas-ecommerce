@@ -43,7 +43,7 @@ function dl_nav_active($path, $current) {
             <a href="<?= base_url() ?>" class="<?= dl_nav_active('', $current_uri) ?>">Home</a>
             <a href="<?= base_url('shop') ?>" class="<?= dl_nav_active('shop', $current_uri) ?>">All Products</a>
             <?php if (!empty($categories)): ?>
-                <?php foreach (array_slice($categories, 0, 6) as $cat): ?>
+                <?php foreach ($categories as $cat): ?>
                     <a href="<?= base_url('shop/' . $cat->slug) ?>"
                        class="<?= dl_nav_active('shop/' . $cat->slug, $current_uri) ?>">
                         <?= htmlspecialchars($cat->name) ?>

@@ -3,7 +3,7 @@
     <img src="<?= base_url('assets/img/hero-bg.png') ?>" alt="" class="dl-hero-bg" aria-hidden="true">
     <div class="dl-hero-content">
         <h1>Discover <span>Fun</span> &amp; Learning!</h1>
-        <p>Malaysia's trusted marketplace for kids, teens, and everyone in between.<br>Shop unique items from verified local sellers.</p>
+        <p>Singapore's trusted marketplace for kids, teens, and everyone in between.<br>Shop unique items from verified local sellers.</p>
         <div class="dl-hero-search">
             <input type="text" placeholder="Search products, brands, categories…" id="hero-search-input"
                    aria-label="Search products"

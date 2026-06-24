@@ -2,17 +2,17 @@
     <div class="container">
         <div class="dl-footer-grid">
             <div class="dl-footer-brand">
-                <img src="<?= base_url('assets/img/logo.png') ?>" alt="DLIdeas">
-                <p>Malaysia's trusted marketplace for kids, teens, and families. Shop unique items from verified local sellers.</p>
+                <img src="<?= base_url('assets/img/logo-black.png') ?>" alt="DLIdeas">
+                <p>Singapore's trusted marketplace for kids, teens, and families. Shop unique items from verified local sellers.</p>
             </div>
 
             <div class="dl-footer-col">
                 <h4>Company</h4>
                 <ul>
-                    <li><a href="#">Our Story</a></li>
-                    <li><a href="#">Trust &amp; Safety</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Press</a></li>
+                    <li><a href="<?= base_url('our-story') ?>">Our Story</a></li>
+                    <li><a href="<?= base_url('trust-safety') ?>">Trust &amp; Safety</a></li>
+                    <li><a href="<?= base_url('careers') ?>">Careers</a></li>
+                    <li><a href="<?= base_url('press') ?>">Press</a></li>
                 </ul>
             </div>
 
@@ -21,24 +21,24 @@
                 <ul>
                     <li><a href="<?= base_url('register') ?>">Become a Seller</a></li>
                     <li><a href="<?= base_url('seller') ?>">Seller Dashboard</a></li>
-                    <li><a href="#">Vendor Guidelines</a></li>
+                    <li><a href="<?= base_url('vendor-guidelines') ?>">Vendor Guidelines</a></li>
                 </ul>
             </div>
 
             <div class="dl-footer-col">
                 <h4>Support</h4>
                 <ul>
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Returns &amp; Refunds</a></li>
+                    <li><a href="<?= base_url('help-center') ?>">Help Center</a></li>
+                    <li><a href="<?= base_url('returns') ?>">Returns &amp; Refunds</a></li>
                     <li><a href="<?= base_url('orders') ?>">Track Order</a></li>
-                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="<?= base_url('contact') ?>">Contact Us</a></li>
                 </ul>
             </div>
         </div>
 
         <div class="dl-footer-bottom">
-            <span>&copy; <?= date('Y') ?> DLIdeas Marketplace. All rights reserved.</span>
-            <span>Made with ♥ in Malaysia</span>
+            <span>&copy; <?= date('Y') ?> <a href="https://dlideas.com/" target="_blank" rel="noopener">DL Ideas Pte. Ltd.</a> All rights reserved.</span>
+            <span>Demo build by Ahmad Hafiz &mdash; not a real store</span>
         </div>
     </div>
 </footer>

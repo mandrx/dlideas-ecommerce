@@ -3,7 +3,7 @@
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     </div>
     <h1>Contact Us</h1>
-    <p>Got a question or feedback? Ahmad reads every message personally.</p>
+    <p>Got a question, feedback, or a hire inquiry? Hafiz reads every message personally — this form is live.</p>
 </div>
 
 <div class="dl-page-content dl-page-content--wide">
@@ -39,7 +39,7 @@
                 </div>
                 <div>
                     <p class="dl-contact-card-label">This form is real</p>
-                    <p class="dl-contact-card-value">Messages go directly to Ahmad — not a demo, not mocked.</p>
+                    <p class="dl-contact-card-value">Messages go straight to Hafiz's inbox. This is the one part of the site that's fully live.</p>
                 </div>
             </div>
 
@@ -69,7 +69,7 @@
         <div class="dl-contact-form-wrap">
             <div class="dl-contact-form-header">
                 <h2>Send a Message</h2>
-                <p>This is a real form — your message is saved and read personally by Ahmad. Not a mock.</p>
+                <p>Unlike the rest of this demo, this form is fully wired up. Your message lands in Hafiz's inbox — no middleware, no mock data.</p>
             </div>
 
             <form class="dl-contact-form" id="contactForm" method="POST" action="<?= site_url('contact/submit') ?>">
@@ -105,7 +105,7 @@
                 </button>
                 <p style="margin:.75rem 0 0;font-size:.8rem;color:var(--text-muted);text-align:center;display:flex;align-items:center;justify-content:center;gap:.35rem;">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    Stored securely and read personally — not a demo
+                    Stored securely · read personally by Hafiz · not a mock
                 </p>
             </form>
         </div>

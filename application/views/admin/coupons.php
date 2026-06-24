@@ -1,38 +1,66 @@
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="mb-0">Manage Coupons</h2>
-    <a href="<?= base_url('admin/coupons/add') ?>" class="btn btn-primary btn-sm">+ New Coupon</a>
+<div class="dl-page-header">
+    <h2>Manage Coupons</h2>
+    <a href="<?= base_url('admin/coupons/add') ?>" class="btn btn-primary">+ New Coupon</a>
 </div>
 
+<?php if (empty($coupons)): ?>
+<div class="dl-empty-state">
+    <div class="dl-empty-state-icon">🎟️</div>
+    <h3>No coupons yet</h3>
+    <p>Create discount codes to reward your shoppers.</p>
+    <a href="<?= base_url('admin/coupons/add') ?>" class="btn btn-primary">Create Coupon</a>
+</div>
+<?php else: ?>
 <div class="table-responsive">
-<table class="table table-hover align-middle">
-    <thead class="table-light">
-        <tr><th>Code</th><th>Type</th><th>Value</th><th>Min Order</th><th>Used / Max</th><th>Expires</th><th>Status</th><th></th></tr>
+<table class="dl-orders-table">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Type</th>
+            <th>Value</th>
+            <th>Min Order</th>
+            <th>Usage</th>
+            <th>Expires</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
     <?php foreach ($coupons as $c): ?>
+    <?php
+    $usage_pct   = $c->max_uses > 0 ? min(100, round($c->used_count / $c->max_uses * 100)) : 0;
+    $is_active   = $c->status === 'active';
+    $is_expired  = strtotime($c->expires_at) < time();
+    $status_class = ($is_active && !$is_expired) ? 'delivered' : 'cancelled';
+    ?>
     <tr>
-        <td><code><?= htmlspecialchars($c->code) ?></code></td>
-        <td><?= ucfirst($c->type) ?></td>
-        <td>
+        <td><span class="dl-coupon-code"><?= htmlspecialchars($c->code) ?></span></td>
+        <td style="color:var(--text-muted);font-size:0.88rem;text-transform:capitalize;"><?= $c->type ?></td>
+        <td style="font-weight:800;font-family:'Baloo 2','Nunito',sans-serif;color:var(--primary);">
             <?php if ($c->type === 'percent'): ?>
-            <?= $c->value ?>%
+                <?= $c->value ?>%
             <?php else: ?>
-            RM <?= number_format($c->value, 2) ?>
+                S$ <?= number_format($c->value, 2) ?>
             <?php endif; ?>
         </td>
-        <td>RM <?= number_format($c->min_order, 2) ?></td>
-        <td><?= $c->used_count ?> / <?= $c->max_uses ?></td>
-        <td><?= date('d M Y', strtotime($c->expires_at)) ?></td>
+        <td style="color:var(--text-muted);font-size:0.88rem;">S$ <?= number_format($c->min_order, 2) ?></td>
         <td>
-            <span class="badge bg-<?= $c->status === 'active' ? 'success' : 'secondary' ?>">
-                <?= ucfirst($c->status) ?>
-            </span>
+            <div class="dl-usage-bar">
+                <div class="dl-usage-track">
+                    <div class="dl-usage-fill" style="width:<?= $usage_pct ?>%;"></div>
+                </div>
+                <span class="dl-usage-label"><?= $c->used_count ?>/<?= $c->max_uses ?></span>
+            </div>
         </td>
+        <td style="font-size:0.85rem;<?= $is_expired ? 'color:var(--danger);font-weight:700;' : 'color:var(--text-muted);' ?>">
+            <?= $is_expired ? '⚠ ' : '' ?><?= date('d M Y', strtotime($c->expires_at)) ?>
+        </td>
+        <td><span class="dl-status-badge dl-status-badge--<?= $status_class ?>"><?= $is_expired ? 'Expired' : ucfirst($c->status) ?></span></td>
         <td>
             <a href="<?= base_url('admin/coupons/' . $c->id . '/toggle') ?>"
-               class="btn btn-sm btn-outline-secondary"
-               onclick="return confirm('Toggle coupon status?')">
-                <?= $c->status === 'active' ? 'Deactivate' : 'Activate' ?>
+               class="dl-action-btn <?= $is_active ? 'dl-action-btn--danger' : 'dl-action-btn--approve' ?>"
+               onclick="return confirm('<?= $is_active ? 'Deactivate' : 'Activate' ?> this coupon?')">
+                <?= $is_active ? 'Deactivate' : 'Activate' ?>
             </a>
         </td>
     </tr>
@@ -40,6 +68,4 @@
     </tbody>
 </table>
 </div>
-<?php if (empty($coupons)): ?>
-<p class="text-muted text-center py-4">No coupons yet. <a href="<?= base_url('admin/coupons/add') ?>">Create one</a>.</p>
 <?php endif; ?>

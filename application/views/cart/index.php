@@ -40,7 +40,7 @@
                             </div>
                         </div>
                     </td>
-                    <td class="dl-cart-price">RM <?= number_format($item->unit_price, 2) ?></td>
+                    <td class="dl-cart-price">S$ <?= number_format($item->unit_price, 2) ?></td>
                     <td style="width:130px;">
                         <form action="<?= base_url('cart/update') ?>" method="post" class="dl-qty-form">
                             <?= csrf_field() ?>
@@ -50,7 +50,7 @@
                             <button type="submit" class="dl-qty-btn" title="Update quantity">↺</button>
                         </form>
                     </td>
-                    <td class="dl-cart-total">RM <?= number_format($item->line_total, 2) ?></td>
+                    <td class="dl-cart-total">S$ <?= number_format($item->line_total, 2) ?></td>
                     <td>
                         <a href="<?= base_url('cart/remove/' . $item->id) ?>"
                            class="dl-remove-btn"
@@ -74,16 +74,16 @@
             <div class="dl-summary-body">
                 <div class="dl-summary-row">
                     <span>Subtotal</span>
-                    <span>RM <?= number_format($subtotal, 2) ?></span>
+                    <span>S$ <?= number_format($subtotal, 2) ?></span>
                 </div>
                 <div class="dl-summary-row" style="color:var(--text-muted);">
                     <span>Shipping</span>
-                    <span>RM 10.00</span>
+                    <span>S$ 10.00</span>
                 </div>
                 <div class="dl-summary-divider"></div>
                 <div class="dl-summary-row total">
                     <span>Total</span>
-                    <span class="dl-summary-amount">RM <?= number_format($subtotal + 10, 2) ?></span>
+                    <span class="dl-summary-amount">S$ <?= number_format($subtotal + 10, 2) ?></span>
                 </div>
             </div>
             <div class="dl-summary-footer">

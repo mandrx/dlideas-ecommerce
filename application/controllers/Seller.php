@@ -11,6 +11,7 @@ class Seller extends MY_Controller
         $this->require_role(ROLE_SELLER);
         $this->load->model('store_model');
         $this->load->model('product_model');
+        $this->load->model('order_model');
         $this->load->model('category_model');
 
         $this->store = $this->store_model->find_by_user($this->current_user->id);
@@ -26,9 +27,13 @@ class Seller extends MY_Controller
         $products = $this->product_model->get_by_store($this->store->id, 5, 0);
 
         $this->_render('seller/dashboard', array(
-            'page_title'     => 'Seller Dashboard',
-            'total_products' => $total,
-            'recent_products'=> $products,
+            'page_title'       => 'Seller Dashboard',
+            'total_products'   => $total,
+            'recent_products'  => $products,
+            'total_orders'     => $this->order_model->count_for_seller($this->store->id),
+            'pending_orders'   => $this->order_model->count_pending_for_seller($this->store->id),
+            'total_revenue'    => $this->order_model->revenue_for_seller($this->store->id),
+            'recent_orders'    => $this->order_model->get_for_seller($this->store->id, 5, 0),
         ));
     }
 
@@ -116,6 +121,7 @@ class Seller extends MY_Controller
         if (!$product || $product->store_id != $this->store->id) {
             show_error('Product not found.', 404);
         }
+        $this->db->delete('cart_items', ['product_id' => $id]);
         $this->product_model->delete($id);
         $this->redirect_with_message('seller/products', 'Product deleted.');
     }

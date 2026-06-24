@@ -39,7 +39,7 @@
     <tr>
         <td><span class="dl-order-id">#<?= $o->id ?></span></td>
         <td><?= htmlspecialchars($o->store_name) ?></td>
-        <td><span class="dl-order-total">RM <?= number_format($o->total, 2) ?></span></td>
+        <td><span class="dl-order-total">S$ <?= number_format($o->total, 2) ?></span></td>
         <td><span class="dl-status-badge dl-status-badge--<?= $status_class ?>"><?= ucfirst($o->status) ?></span></td>
         <td style="color:var(--text-muted);font-size:0.88rem;"><?= date('d M Y', strtotime($o->created_at)) ?></td>
         <td>

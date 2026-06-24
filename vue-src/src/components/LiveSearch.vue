@@ -29,7 +29,7 @@ function close() {
 }
 
 function formatPrice(p, sale) {
-  return 'RM ' + Number(sale || p).toFixed(2)
+  return 'S$ ' + Number(sale || p).toFixed(2)
 }
 </script>
 
