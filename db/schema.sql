@@ -222,6 +222,18 @@ CREATE TABLE `coupon_uses` (
   CONSTRAINT `coupon_uses_order_fk` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Contact messages
+CREATE TABLE IF NOT EXISTS `contact_messages` (
+  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) NOT NULL,
+  `email` varchar(191) NOT NULL,
+  `subject` varchar(100) NOT NULL DEFAULT 'General Enquiry',
+  `message` text NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- Seed: default admin user (password: Admin@1234)
 -- IMPORTANT: This seed hash is for the string 'password'. Run Task 11 Step 2 to set a proper Admin@1234 hash before using.
 INSERT INTO `users` (`email`, `password`, `full_name`, `role`, `status`) VALUES
