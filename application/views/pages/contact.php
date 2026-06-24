@@ -34,12 +34,12 @@
             </div>
 
             <div class="dl-contact-card">
-                <div class="dl-contact-card-icon dl-contact-card-icon--globe">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <div class="dl-contact-card-icon dl-contact-card-icon--globe" style="background:oklch(93% 0.06 155);color:oklch(42% 0.12 155);">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <div>
-                    <p class="dl-contact-card-label">About This Site</p>
-                    <p class="dl-contact-card-value">Demo build for <a href="https://dlideas.com/" target="_blank" rel="noopener">DL Ideas Pte. Ltd.</a></p>
+                    <p class="dl-contact-card-label">This form is real</p>
+                    <p class="dl-contact-card-value">Messages go directly to Ahmad — not a demo, not mocked.</p>
                 </div>
             </div>
 
@@ -69,7 +69,7 @@
         <div class="dl-contact-form-wrap">
             <div class="dl-contact-form-header">
                 <h2>Send a Message</h2>
-                <p>Fill in the form below and we'll get back to you within 1–2 business days.</p>
+                <p>This is a real form — your message is saved and read personally by Ahmad. Not a mock.</p>
             </div>
 
             <form class="dl-contact-form" id="contactForm" method="POST" action="<?= site_url('contact/submit') ?>">
@@ -103,6 +103,10 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                     Send Message
                 </button>
+                <p style="margin:.75rem 0 0;font-size:.8rem;color:var(--text-muted);text-align:center;display:flex;align-items:center;justify-content:center;gap:.35rem;">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Stored securely and read personally — not a demo
+                </p>
             </form>
         </div>
 

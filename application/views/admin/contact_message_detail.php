@@ -1,10 +1,36 @@
+<style>
+.cm-card {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+}
+.cm-label {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 0 0 .6rem;
+}
+.cm-subject-tag {
+    display: inline-block;
+    padding: .25rem .75rem;
+    border-radius: var(--radius-pill);
+    font-size: .78rem;
+    font-weight: 700;
+    background: var(--primary-light);
+    color: var(--primary);
+}
+</style>
+
 <div class="dl-page-header">
     <div>
-        <a href="<?= base_url('admin/contact-messages') ?>" class="dl-btn dl-btn-sm dl-btn-outline" style="margin-bottom:.75rem;display:inline-flex;align-items:center;gap:.35rem;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        <a href="<?= base_url('admin/contact-messages') ?>" style="display:inline-flex;align-items:center;gap:.3rem;font-size:.82rem;font-weight:700;color:var(--text-muted);text-decoration:none;margin-bottom:.6rem;transition:color var(--t-fast);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
             All Messages
         </a>
-        <h2>Message #<?= $message->id ?></h2>
+        <h2 style="margin:0;">Message #<?= $message->id ?></h2>
         <p class="dl-page-subtitle"><?= date('l, d M Y \a\t H:i', strtotime($message->created_at)) ?></p>
     </div>
     <a href="mailto:<?= htmlspecialchars($message->email) ?>?subject=Re: <?= urlencode($message->subject) ?>" class="dl-btn dl-btn-primary">
@@ -13,34 +39,35 @@
     </a>
 </div>
 
-<div style="display:grid;grid-template-columns:1fr 280px;gap:1.5rem;align-items:start;">
+<div style="display:grid;grid-template-columns:1fr 268px;gap:var(--space-5);align-items:start;">
 
     <!-- Message body -->
-    <div class="dl-card" style="padding:2rem;">
-        <div style="margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:1px solid var(--dl-border);">
-            <span class="dl-badge dl-badge--info" style="font-size:.8rem;"><?= htmlspecialchars($message->subject) ?></span>
+    <div class="cm-card" style="padding:var(--space-6);">
+        <div style="margin-bottom:var(--space-5);padding-bottom:var(--space-4);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:var(--space-3);">
+            <span class="cm-subject-tag"><?= htmlspecialchars($message->subject) ?></span>
         </div>
-        <div style="font-size:1rem;line-height:1.75;white-space:pre-wrap;word-break:break-word;color:var(--dl-text);">
-            <?= htmlspecialchars($message->message) ?>
-        </div>
+        <div style="font-size:.97rem;line-height:1.8;white-space:pre-wrap;word-break:break-word;color:var(--text-dark);"><?= htmlspecialchars(trim($message->message)) ?></div>
     </div>
 
-    <!-- Sidebar: sender details -->
-    <div style="display:flex;flex-direction:column;gap:1rem;">
-        <div class="dl-card" style="padding:1.25rem;">
-            <p style="font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dl-muted);margin-bottom:.75rem;">Sender</p>
-            <p style="font-weight:700;font-size:1rem;margin-bottom:.2rem;"><?= htmlspecialchars($message->name) ?></p>
-            <a href="mailto:<?= htmlspecialchars($message->email) ?>" style="font-size:.9rem;color:var(--dl-primary);"><?= htmlspecialchars($message->email) ?></a>
+    <!-- Sidebar -->
+    <div style="display:flex;flex-direction:column;gap:var(--space-4);">
+
+        <div class="cm-card" style="padding:var(--space-5);">
+            <p class="cm-label">Sender</p>
+            <p style="font-weight:700;font-size:1rem;margin:0 0 .25rem;color:var(--text-dark);"><?= htmlspecialchars($message->name) ?></p>
+            <a href="mailto:<?= htmlspecialchars($message->email) ?>" style="font-size:.88rem;color:var(--primary);text-decoration:none;word-break:break-all;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'"><?= htmlspecialchars($message->email) ?></a>
         </div>
-        <div class="dl-card" style="padding:1.25rem;">
-            <p style="font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dl-muted);margin-bottom:.75rem;">Details</p>
-            <dl style="display:grid;grid-template-columns:auto 1fr;gap:.4rem .75rem;font-size:.85rem;margin:0;">
-                <dt style="color:var(--dl-muted);">Received</dt>
-                <dd style="margin:0;"><?= date('d M Y H:i', strtotime($message->created_at)) ?></dd>
-                <dt style="color:var(--dl-muted);">IP</dt>
-                <dd style="margin:0;font-family:monospace;"><?= htmlspecialchars($message->ip_address) ?></dd>
+
+        <div class="cm-card" style="padding:var(--space-5);">
+            <p class="cm-label">Details</p>
+            <dl style="display:grid;grid-template-columns:auto 1fr;gap:.4rem var(--space-4);font-size:.84rem;margin:0;">
+                <dt style="color:var(--text-muted);white-space:nowrap;">Received</dt>
+                <dd style="margin:0;color:var(--text-dark);"><?= date('d M Y, H:i', strtotime($message->created_at)) ?></dd>
+                <dt style="color:var(--text-muted);">IP</dt>
+                <dd style="margin:0;font-family:monospace;font-size:.8rem;color:var(--text-muted);"><?= htmlspecialchars($message->ip_address) ?></dd>
             </dl>
         </div>
+
     </div>
 
 </div>
