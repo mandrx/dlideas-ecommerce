@@ -307,6 +307,117 @@
             border-radius: 2px;
         }
 
+        /* Test accounts widget */
+        .test-accounts {
+            margin-top: var(--space-5);
+            border: 1.5px dashed var(--border-strong);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+        .test-accounts-toggle {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px var(--space-4);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 0.8125rem;
+            color: oklch(48% 0.012 33);
+            text-align: left;
+            transition: background var(--t-fast);
+        }
+        .test-accounts-toggle:hover { background: var(--bg-alt); }
+        .test-accounts-toggle svg:first-child { color: oklch(55% 0.08 33); flex-shrink: 0; }
+        .test-accounts-chevron {
+            margin-left: auto;
+            transition: transform var(--t-fast) var(--ease-out);
+            flex-shrink: 0;
+        }
+        .test-accounts-toggle[aria-expanded="true"] .test-accounts-chevron {
+            transform: rotate(180deg);
+        }
+
+        .test-accounts-list {
+            list-style: none;
+            margin: 0;
+            padding: 0 var(--space-3) var(--space-3);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .test-accounts-list li {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: 8px 10px;
+            border-radius: calc(var(--radius-sm) - 2px);
+            background: var(--bg-alt);
+        }
+        .ta-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
+            flex-wrap: wrap;
+        }
+        .ta-badge {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 0.6875rem;
+            padding: 2px 7px;
+            border-radius: 99px;
+            letter-spacing: 0.03em;
+            flex-shrink: 0;
+        }
+        .ta-badge--admin  { background: oklch(88% 0.08 33);  color: oklch(38% 0.12 33); }
+        .ta-badge--seller { background: oklch(88% 0.10 200); color: oklch(36% 0.12 200); }
+        .ta-badge--buyer  { background: oklch(90% 0.08 145); color: oklch(36% 0.12 145); }
+        .ta-desc {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            font-size: 0.8125rem;
+            color: var(--text-dark);
+        }
+        .ta-email {
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.75rem;
+            color: oklch(52% 0.012 33);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .ta-password {
+            font-family: monospace;
+            font-size: 0.75rem;
+            color: oklch(48% 0.08 33);
+            background: oklch(94% 0.04 33 / 0.6);
+            padding: 1px 6px;
+            border-radius: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .ta-fill-btn {
+            flex-shrink: 0;
+            padding: 4px 12px;
+            background: var(--primary);
+            color: var(--text-on-primary);
+            border: none;
+            border-radius: calc(var(--radius-sm) - 2px);
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background var(--t-fast), transform var(--t-fast);
+        }
+        .ta-fill-btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .ta-fill-btn:active { transform: translateY(0); }
+        .ta-fill-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
         /* Terms note */
         .auth-terms {
             margin-top: var(--space-4);
@@ -464,6 +575,26 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script>
+    // Test accounts toggle + fill
+    var taToggle = document.querySelector('.test-accounts-toggle');
+    if (taToggle) {
+        taToggle.addEventListener('click', function() {
+            var expanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', String(!expanded));
+            document.getElementById('test-accounts-list').hidden = expanded;
+        });
+        document.querySelectorAll('.ta-fill-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var emailInput = document.getElementById('email');
+                var pwInput = document.getElementById('password');
+                if (emailInput) emailInput.value = this.dataset.email;
+                if (pwInput) pwInput.value = this.dataset.password;
+                emailInput && emailInput.dispatchEvent(new Event('input'));
+                pwInput && pwInput.dispatchEvent(new Event('input'));
+            });
+        });
+    }
+
     // Password show/hide toggle
     document.querySelectorAll('.auth-pw-toggle').forEach(function(btn) {
         btn.addEventListener('click', function() {
