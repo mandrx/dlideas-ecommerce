@@ -47,3 +47,67 @@
 <?= form_close() ?>
 
 <p class="auth-switch">Don't have an account? <a href="<?= base_url('register') ?>">Create one — it's free</a></p>
+
+<div class="test-accounts">
+    <button type="button" class="test-accounts-toggle" aria-expanded="true" aria-controls="test-accounts-list">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Test accounts
+        <svg class="test-accounts-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <ul class="test-accounts-list" id="test-accounts-list">
+        <li>
+            <div class="ta-info">
+                <span class="ta-badge ta-badge--admin">Admin</span>
+                <span class="ta-desc">Platform admin</span>
+                <span class="ta-email">admin@ci3ecomm.local</span>
+                <span class="ta-password">Admin@1234</span>
+            </div>
+            <button type="button" class="ta-fill-btn" data-email="admin@ci3ecomm.local" data-password="Admin@1234">Use</button>
+        </li>
+        <li>
+            <div class="ta-info">
+                <span class="ta-badge ta-badge--seller">Seller</span>
+                <span class="ta-desc">Alice Tech Store</span>
+                <span class="ta-email">alice@example.com</span>
+                <span class="ta-password">Test@1234</span>
+            </div>
+            <button type="button" class="ta-fill-btn" data-email="alice@example.com" data-password="Test@1234">Use</button>
+        </li>
+        <li>
+            <div class="ta-info">
+                <span class="ta-badge ta-badge--seller">Seller</span>
+                <span class="ta-desc">Bob Fashion Hub</span>
+                <span class="ta-email">bob@example.com</span>
+                <span class="ta-password">Test@1234</span>
+            </div>
+            <button type="button" class="ta-fill-btn" data-email="bob@example.com" data-password="Test@1234">Use</button>
+        </li>
+        <li>
+            <div class="ta-info">
+                <span class="ta-badge ta-badge--buyer">Buyer</span>
+                <span class="ta-desc">Regular buyer</span>
+                <span class="ta-email">dave@example.com</span>
+                <span class="ta-password">Test@1234</span>
+            </div>
+            <button type="button" class="ta-fill-btn" data-email="dave@example.com" data-password="Test@1234">Use</button>
+        </li>
+        <li>
+            <div class="ta-info">
+                <span class="ta-badge ta-badge--buyer">Buyer</span>
+                <span class="ta-desc">Regular buyer</span>
+                <span class="ta-email">eve@example.com</span>
+                <span class="ta-password">Test@1234</span>
+            </div>
+            <button type="button" class="ta-fill-btn" data-email="eve@example.com" data-password="Test@1234">Use</button>
+        </li>
+        <li>
+            <div class="ta-info">
+                <span class="ta-badge ta-badge--buyer">Buyer</span>
+                <span class="ta-desc">Original test buyer</span>
+                <span class="ta-email">buyer@test.com</span>
+                <span class="ta-password">Test@1234</span>
+            </div>
+            <button type="button" class="ta-fill-btn" data-email="buyer@test.com" data-password="Test@1234">Use</button>
+        </li>
+    </ul>
+</div>
