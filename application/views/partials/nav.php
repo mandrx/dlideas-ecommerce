@@ -1,23 +1,70 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<?php
+$current_uri = uri_string();
+function dl_nav_active($path, $current) {
+    return ($path !== '' && strpos($current, $path) === 0) || ($path === '' && $current === '') ? 'active' : '';
+}
+?>
+<header class="dl-header">
     <div class="container">
-        <a class="navbar-brand" href="<?= base_url() ?>">CI3 Shop</a>
-        <div class="collapse navbar-collapse">
-            <div id="live-search" class="ms-auto me-3"></div>
-            <ul class="navbar-nav">
+        <div class="dl-header-top">
+            <a href="<?= base_url() ?>" class="dl-logo">
+                <img src="<?= base_url('assets/img/logo.png') ?>" alt="DLIdeas">
+            </a>
+
+            <div id="live-search"></div>
+
+            <div class="dl-header-actions">
                 <?php if ($current_user): ?>
+                    <span class="dl-btn-ghost" style="cursor:default;"><?= htmlspecialchars($current_user->full_name) ?></span>
                     <?php if ($current_user->role === 'seller'): ?>
-                        <li class="nav-item"><a class="nav-link" href="<?= base_url('seller') ?>">Dashboard</a></li>
+                        <a href="<?= base_url('seller') ?>" class="dl-btn-ghost">Dashboard</a>
                     <?php elseif ($current_user->role === 'admin'): ?>
-                        <li class="nav-item"><a class="nav-link" href="<?= base_url('admin') ?>">Admin</a></li>
+                        <a href="<?= base_url('admin') ?>" class="dl-btn-ghost">Admin</a>
                     <?php endif; ?>
-                    <li class="nav-item"><a class="nav-link" href="<?= base_url('orders') ?>">Orders</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<?= base_url('logout') ?>">Logout</a></li>
+                    <a href="<?= base_url('orders') ?>" class="dl-btn-ghost">Orders</a>
+                    <a href="<?= base_url('logout') ?>" class="dl-btn-ghost">Logout</a>
                 <?php else: ?>
-                    <li class="nav-item"><a class="nav-link" href="<?= base_url('login') ?>">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<?= base_url('register') ?>">Register</a></li>
+                    <a href="<?= base_url('login') ?>" class="dl-btn-ghost">Sign In</a>
+                    <a href="<?= base_url('register') ?>" class="dl-btn-ghost">Register</a>
                 <?php endif; ?>
-                <li class="nav-item"><a class="nav-link" href="<?= base_url('cart') ?>">Cart</a></li>
-            </ul>
+                <a href="<?= base_url('cart') ?>" class="dl-btn-cart">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    Cart
+                </a>
+            </div>
         </div>
+
+        <?php if (!isset($hide_subnav) || !$hide_subnav): ?>
+        <nav class="dl-subnav" aria-label="Shop navigation">
+            <a href="<?= base_url() ?>" class="<?= dl_nav_active('', $current_uri) ?>">Home</a>
+            <a href="<?= base_url('shop') ?>" class="<?= dl_nav_active('shop', $current_uri) ?>">All Products</a>
+            <?php if (!empty($categories)): ?>
+                <?php foreach (array_slice($categories, 0, 6) as $cat): ?>
+                    <a href="<?= base_url('shop/' . $cat->slug) ?>"
+                       class="<?= dl_nav_active('shop/' . $cat->slug, $current_uri) ?>">
+                        <?= htmlspecialchars($cat->name) ?>
+                    </a>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <a href="<?= base_url('register') ?>">Sell on DLIdeas</a>
+        </nav>
+        <?php elseif ($current_user && $current_user->role === 'seller'): ?>
+        <nav class="dl-subnav" aria-label="Seller navigation">
+            <a href="<?= base_url('seller') ?>" class="<?= dl_nav_active('seller', $current_uri) === 'active' && $current_uri === 'seller' ? 'active' : '' ?>">Dashboard</a>
+            <a href="<?= base_url('seller/products') ?>" class="<?= dl_nav_active('seller/products', $current_uri) ?>">Products</a>
+            <a href="<?= base_url('seller/orders') ?>" class="<?= dl_nav_active('seller/orders', $current_uri) ?>">Orders</a>
+            <a href="<?= base_url('seller/store') ?>" class="<?= dl_nav_active('seller/store', $current_uri) ?>">Store Settings</a>
+        </nav>
+        <?php elseif ($current_user && $current_user->role === 'admin'): ?>
+        <nav class="dl-subnav" aria-label="Admin navigation">
+            <a href="<?= base_url('admin') ?>" class="<?= $current_uri === 'admin' ? 'active' : '' ?>">Dashboard</a>
+            <a href="<?= base_url('admin/users') ?>" class="<?= dl_nav_active('admin/users', $current_uri) ?>">Users</a>
+            <a href="<?= base_url('admin/stores') ?>" class="<?= dl_nav_active('admin/stores', $current_uri) ?>">Stores</a>
+            <a href="<?= base_url('admin/products') ?>" class="<?= dl_nav_active('admin/products', $current_uri) ?>">Products</a>
+            <a href="<?= base_url('admin/orders') ?>" class="<?= dl_nav_active('admin/orders', $current_uri) ?>">Orders</a>
+            <a href="<?= base_url('admin/coupons') ?>" class="<?= dl_nav_active('admin/coupons', $current_uri) ?>">Coupons</a>
+            <a href="<?= base_url('admin/reviews') ?>" class="<?= dl_nav_active('admin/reviews', $current_uri) ?>">Reviews</a>
+        </nav>
+        <?php endif; ?>
     </div>
-</nav>
+</header>

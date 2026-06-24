@@ -462,7 +462,12 @@ $config['csrf_token_name'] = 'csrf_token';
 $config['csrf_cookie_name'] = 'csrf_cookie';
 $config['csrf_expire']      = 7200;
 $config['csrf_regenerate']  = TRUE;
-$config['csrf_exclude_uris'] = array('api/webhook/stripe'); // Stripe webhook must be excluded
+$config['csrf_exclude_uris'] = array(
+    'api/webhook/stripe',        // Stripe sends no CSRF token
+    'api/images/upload',         // XHR upload — auth enforced via session check in Api controller
+    'api/images/(.+)/delete',
+    'api/images/(.+)/set-primary',
+);
 
 /*
 |--------------------------------------------------------------------------

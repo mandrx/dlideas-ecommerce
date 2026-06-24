@@ -22,8 +22,13 @@ class MY_Controller extends CI_Controller
             }
         }
 
-        // Make current_user available to all views automatically
-        $this->load->vars(array('current_user' => $this->current_user));
+        // Make current_user and nav categories available to all views
+        $this->load->model('category_model');
+        $nav_categories = $this->category_model->get_parents();
+        $this->load->vars([
+            'current_user'   => $this->current_user,
+            'categories'     => $nav_categories,
+        ]);
     }
 
     protected function require_login()

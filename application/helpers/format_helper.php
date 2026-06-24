@@ -2,9 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 if (!function_exists('format_currency')) {
-    function format_currency($amount, $symbol = '$')
+    function format_currency($amount, $symbol = 'RM')
     {
-        return $symbol . number_format((float) $amount, 2, '.', ',');
+        return $symbol . ' ' . number_format((float) $amount, 2, '.', ',');
     }
 }
 
@@ -35,6 +35,15 @@ if (!function_exists('slugify')) {
         $text = preg_replace('/[^a-z0-9\-]/', '-', $text);
         $text = preg_replace('/-+/', '-', $text);
         return trim($text, '-');
+    }
+}
+
+if (!function_exists('csrf_field')) {
+    function csrf_field()
+    {
+        $CI =& get_instance();
+        return '<input type="hidden" name="' . $CI->security->get_csrf_token_name()
+            . '" value="' . $CI->security->get_csrf_hash() . '">';
     }
 }
 

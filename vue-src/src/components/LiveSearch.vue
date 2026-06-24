@@ -14,10 +14,10 @@ watch(query, (val) => {
   timer = setTimeout(async () => {
     loading.value = true
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(val.trim())}`)
+      const res  = await fetch(`/api/search?q=${encodeURIComponent(val.trim())}`)
       const data = await res.json()
       results.value = data.results
-      open.value = data.results.length > 0
+      open.value    = data.results.length > 0
     } finally {
       loading.value = false
     }
@@ -34,35 +34,44 @@ function formatPrice(p, sale) {
 </script>
 
 <template>
-  <div class="position-relative">
+  <div class="dl-search" style="position:relative;">
     <input
       v-model="query"
       @blur="close"
       type="search"
-      class="form-control form-control-sm"
-      placeholder="Search products…"
-      style="min-width:220px;"
+      placeholder="Search for toys, games, electronics…"
       autocomplete="off"
     />
-    <div v-if="open" class="position-absolute bg-white border rounded shadow-sm"
-         style="top:100%;left:0;right:0;z-index:9999;max-height:360px;overflow-y:auto;">
+    <button @click="open = results.length > 0" type="button">Search</button>
+
+    <!-- Dropdown -->
+    <div v-if="open"
+         style="position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:9999;
+                background:#FFF;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,0.12);
+                overflow:hidden;max-height:380px;overflow-y:auto;">
       <a
         v-for="r in results"
         :key="r.id"
         :href="`/product/${r.slug}`"
-        class="d-flex align-items-center gap-2 p-2 text-decoration-none text-dark border-bottom"
-        style="font-size:.9rem;"
+        style="display:flex;align-items:center;gap:12px;padding:10px 16px;
+               text-decoration:none;color:#2C3E50;border-bottom:1px solid #EEE;
+               font-family:'Nunito',sans-serif;font-size:.92rem;transition:background .15s;"
+        @mouseenter="$event.currentTarget.style.background='#FFF0E8'"
+        @mouseleave="$event.currentTarget.style.background=''"
       >
-        <img v-if="r.image" :src="r.image" style="width:40px;height:40px;object-fit:cover;" class="rounded" alt="">
-        <div v-else style="width:40px;height:40px;" class="bg-light rounded flex-shrink-0"></div>
+        <img v-if="r.image" :src="r.image"
+             style="width:44px;height:44px;object-fit:cover;border-radius:8px;flex-shrink:0;" alt="">
+        <div v-else style="width:44px;height:44px;background:#F5F7FA;border-radius:8px;flex-shrink:0;"></div>
         <div>
-          <div class="fw-semibold">{{ r.name }}</div>
-          <div class="text-muted small">{{ formatPrice(r.price, r.sale_price) }}</div>
+          <div style="font-weight:700;">{{ r.name }}</div>
+          <div style="color:#EF6C23;font-weight:800;font-size:.85rem;">{{ formatPrice(r.price, r.sale_price) }}</div>
         </div>
       </a>
     </div>
-    <div v-if="loading" class="position-absolute" style="top:8px;right:8px;">
-      <span class="spinner-border spinner-border-sm text-secondary"></span>
+
+    <div v-if="loading"
+         style="position:absolute;top:50%;right:12px;transform:translateY(-50%);">
+      <span class="spinner-border spinner-border-sm" style="color:#EF6C23;width:18px;height:18px;"></span>
     </div>
   </div>
 </template>
