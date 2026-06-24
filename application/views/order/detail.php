@@ -37,21 +37,21 @@ $status_class = match($order->status) {
                 <div class="dl-summary-divider"></div>
                 <div class="dl-summary-row">
                     <span>Subtotal</span>
-                    <span>RM <?= number_format($order->subtotal, 2) ?></span>
+                    <span>S$ <?= number_format($order->subtotal, 2) ?></span>
                 </div>
                 <div class="dl-summary-row" style="color:var(--text-muted);">
                     <span>Shipping</span>
-                    <span>RM <?= number_format($order->shipping_cost, 2) ?></span>
+                    <span>S$ <?= number_format($order->shipping_cost, 2) ?></span>
                 </div>
                 <?php if ($order->discount > 0): ?>
                 <div class="dl-summary-row" style="color:var(--success);">
                     <span>Discount</span>
-                    <span>− RM <?= number_format($order->discount, 2) ?></span>
+                    <span>− S$ <?= number_format($order->discount, 2) ?></span>
                 </div>
                 <?php endif; ?>
                 <div class="dl-summary-row total">
                     <span>Total</span>
-                    <span class="dl-summary-amount">RM <?= number_format($order->total, 2) ?></span>
+                    <span class="dl-summary-amount">S$ <?= number_format($order->total, 2) ?></span>
                 </div>
             </div>
         </div>
@@ -102,9 +102,9 @@ $status_class = match($order->status) {
             <span style="font-size:0.78rem;color:var(--text-muted);margin-left:4px;">(removed)</span>
             <?php endif; ?>
         </td>
-        <td style="color:var(--text-muted);">RM <?= number_format($item->unit_price, 2) ?></td>
+        <td style="color:var(--text-muted);">S$ <?= number_format($item->unit_price, 2) ?></td>
         <td style="font-weight:700;">×<?= $item->quantity ?></td>
-        <td class="dl-order-total">RM <?= number_format($item->unit_price * $item->quantity, 2) ?></td>
+        <td class="dl-order-total">S$ <?= number_format($item->unit_price * $item->quantity, 2) ?></td>
     </tr>
     <?php endforeach; ?>
     </tbody>

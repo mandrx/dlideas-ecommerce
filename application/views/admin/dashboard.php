@@ -1,58 +1,70 @@
-<h2 class="mb-4">Admin Dashboard</h2>
+<div class="dl-page-header">
+    <h2>Admin Dashboard</h2>
+</div>
 
-<div class="row g-3 mb-4">
-    <div class="col-sm-6 col-lg-3">
-        <div class="card text-center h-100">
-            <div class="card-body">
-                <div class="fs-1 fw-bold text-primary"><?= $total_users ?></div>
-                <div class="text-muted">Total Users</div>
-            </div>
-        </div>
+<!-- Stats -->
+<div class="dl-stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+    <div class="dl-stat-card dl-stat-card--users">
+        <div class="dl-stat-value"><?= $total_users ?></div>
+        <div class="dl-stat-label">Total Users</div>
     </div>
-    <div class="col-sm-6 col-lg-3">
-        <div class="card text-center h-100">
-            <div class="card-body">
-                <div class="fs-1 fw-bold text-success"><?= $total_stores ?></div>
-                <div class="text-muted">Total Stores</div>
-            </div>
-        </div>
+    <div class="dl-stat-card dl-stat-card--stores">
+        <div class="dl-stat-value"><?= $total_stores ?></div>
+        <div class="dl-stat-label">Total Stores</div>
     </div>
-    <div class="col-sm-6 col-lg-3">
-        <div class="card text-center h-100">
-            <div class="card-body">
-                <div class="fs-1 fw-bold text-info"><?= $total_products ?></div>
-                <div class="text-muted">Total Products</div>
-            </div>
-        </div>
+    <div class="dl-stat-card dl-stat-card--products">
+        <div class="dl-stat-value"><?= $total_products ?></div>
+        <div class="dl-stat-label">Total Products</div>
     </div>
-    <div class="col-sm-6 col-lg-3">
-        <div class="card text-center h-100">
-            <div class="card-body">
-                <div class="fs-1 fw-bold text-warning"><?= $total_orders ?></div>
-                <div class="text-muted">Total Orders</div>
-            </div>
-        </div>
+    <div class="dl-stat-card dl-stat-card--orders">
+        <div class="dl-stat-value"><?= $total_orders ?></div>
+        <div class="dl-stat-label">Total Orders</div>
     </div>
 </div>
 
+<!-- Pending reviews notice -->
+<?php if ($pending_reviews > 0): ?>
+<div class="dl-notice dl-notice--warning" style="margin-bottom:var(--space-5);">
+    <span>⚠️</span>
+    <span>
+        <strong><?= $pending_reviews ?> review<?= $pending_reviews !== 1 ? 's' : '' ?></strong> pending moderation.
+        <a href="<?= base_url('admin/reviews') ?>" style="color:inherit;font-weight:800;text-decoration:underline;text-underline-offset:2px;">Review now →</a>
+    </span>
+</div>
+<?php endif; ?>
+
+<!-- Pending store approvals -->
 <?php if (!empty($pending_stores)): ?>
-<div class="card mb-4">
-    <div class="card-header fw-semibold d-flex justify-content-between">
+<div class="dl-form-card">
+    <div class="dl-form-card-header">
         Pending Store Approvals
-        <span class="badge bg-warning text-dark"><?= count($pending_stores) ?></span>
+        <span class="dl-pending-badge"><?= count($pending_stores) ?></span>
     </div>
     <div class="table-responsive">
-    <table class="table table-hover mb-0">
-        <thead class="table-light"><tr><th>Store</th><th>Slug</th><th>Created</th><th></th></tr></thead>
+    <table class="dl-orders-table" style="border:none;box-shadow:none;">
+        <thead>
+            <tr>
+                <th>Store Name</th>
+                <th>Slug</th>
+                <th>Registered</th>
+                <th></th>
+            </tr>
+        </thead>
         <tbody>
         <?php foreach ($pending_stores as $s): ?>
         <tr>
-            <td><?= htmlspecialchars($s->name) ?></td>
-            <td><code><?= htmlspecialchars($s->slug) ?></code></td>
-            <td><?= date('d M Y', strtotime($s->created_at)) ?></td>
+            <td style="font-weight:700;color:var(--text-dark);"><?= htmlspecialchars($s->name) ?></td>
+            <td><span class="dl-code"><?= htmlspecialchars($s->slug) ?></span></td>
+            <td style="color:var(--text-muted);font-size:0.85rem;"><?= date('d M Y', strtotime($s->created_at)) ?></td>
             <td>
-                <a href="<?= base_url('admin/stores/' . $s->id . '/approve') ?>" class="btn btn-sm btn-success">Approve</a>
-                <a href="<?= base_url('admin/stores/' . $s->id . '/suspend') ?>" class="btn btn-sm btn-outline-secondary ms-1">Suspend</a>
+                <div class="dl-table-actions">
+                    <a href="<?= base_url('admin/stores/' . $s->id . '/approve') ?>"
+                       class="dl-action-btn dl-action-btn--approve"
+                       onclick="return confirm('Approve this store?')">Approve</a>
+                    <a href="<?= base_url('admin/stores/' . $s->id . '/suspend') ?>"
+                       class="dl-action-btn dl-action-btn--danger"
+                       onclick="return confirm('Suspend this store?')">Suspend</a>
+                </div>
             </td>
         </tr>
         <?php endforeach; ?>
@@ -61,12 +73,8 @@
     </div>
 </div>
 <?php else: ?>
-<div class="alert alert-success">No stores pending approval.</div>
-<?php endif; ?>
-
-<?php if ($pending_reviews > 0): ?>
-<div class="alert alert-warning">
-    <?= $pending_reviews ?> review<?= $pending_reviews !== 1 ? 's' : '' ?> pending moderation.
-    <a href="<?= base_url('admin/reviews') ?>" class="alert-link">Review now →</a>
+<div class="dl-notice dl-notice--info">
+    <span>✓</span>
+    <span>No stores pending approval — all caught up.</span>
 </div>
 <?php endif; ?>

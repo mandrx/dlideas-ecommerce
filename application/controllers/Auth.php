@@ -27,19 +27,28 @@ class Auth extends MY_Controller
 
         if ($this->form_validation->run() === FALSE) {
             $this->session->set_flashdata('error', validation_errors(' ', ' '));
-            redirect('login');
+            $data['page_title']   = 'Login';
+            $data['content_view'] = 'auth/login';
+            $this->load->view('layouts/auth', $data);
+            return;
         }
 
         $user = $this->user_model->find_by_email($this->input->post('email'));
 
         if (!$user || !password_verify($this->input->post('password'), $user->password)) {
             $this->session->set_flashdata('error', 'Invalid email or password.');
-            redirect('login');
+            $data['page_title']   = 'Login';
+            $data['content_view'] = 'auth/login';
+            $this->load->view('layouts/auth', $data);
+            return;
         }
 
         if ($user->status === USER_BANNED) {
             $this->session->set_flashdata('error', 'Your account has been suspended.');
-            redirect('login');
+            $data['page_title']   = 'Login';
+            $data['content_view'] = 'auth/login';
+            $this->load->view('layouts/auth', $data);
+            return;
         }
 
         $store_id = null;
@@ -88,7 +97,10 @@ class Auth extends MY_Controller
 
         if ($this->form_validation->run() === FALSE) {
             $this->session->set_flashdata('error', validation_errors(' ', ' '));
-            redirect('register');
+            $data['page_title']   = 'Create Account';
+            $data['content_view'] = 'auth/register';
+            $this->load->view('layouts/auth', $data);
+            return;
         }
 
         $user_id = $this->user_model->register(array(

@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 if (!function_exists('format_currency')) {
-    function format_currency($amount, $symbol = 'RM')
+    function format_currency($amount, $symbol = 'S$')
     {
         return $symbol . ' ' . number_format((float) $amount, 2, '.', ',');
     }

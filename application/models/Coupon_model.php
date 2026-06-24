@@ -64,7 +64,7 @@ class Coupon_model extends MY_Model
             return ['ok' => false, 'error' => 'This coupon has reached its usage limit.'];
         }
         if ($subtotal < $coupon->min_order) {
-            return ['ok' => false, 'error' => 'Minimum order of RM ' . number_format($coupon->min_order, 2) . ' required.'];
+            return ['ok' => false, 'error' => 'Minimum order of S$ ' . number_format($coupon->min_order, 2) . ' required.'];
         }
         // Check this user hasn't already used it
         $already = $this->db

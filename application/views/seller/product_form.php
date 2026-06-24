@@ -51,12 +51,12 @@ $tags_val   = set_value('tags',        isset($tag_str) ? $tag_str : '');
             <div class="dl-form-card-body">
                 <div class="row g-3">
                     <div class="col-sm-4">
-                        <label class="form-label" style="font-weight:800;">Price (RM) <span style="color:var(--danger);">*</span></label>
+                        <label class="form-label" style="font-weight:800;">Price (S$) <span style="color:var(--danger);">*</span></label>
                         <input type="number" name="price" class="form-control" step="0.01" min="0"
                                value="<?= htmlspecialchars($price_val) ?>" required>
                     </div>
                     <div class="col-sm-4">
-                        <label class="form-label" style="font-weight:800;">Sale Price (RM) <small style="font-weight:600;color:var(--text-muted);">optional</small></label>
+                        <label class="form-label" style="font-weight:800;">Sale Price (S$) <small style="font-weight:600;color:var(--text-muted);">optional</small></label>
                         <input type="number" name="sale_price" class="form-control" step="0.01" min="0"
                                value="<?= htmlspecialchars($sale_val) ?>">
                     </div>

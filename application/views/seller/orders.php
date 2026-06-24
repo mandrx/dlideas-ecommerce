@@ -42,7 +42,7 @@
         <td><span class="dl-order-id">#<?= $order->id ?></span></td>
         <td style="font-weight:700;color:var(--text-dark);"><?= htmlspecialchars($order->buyer_name) ?></td>
         <td style="color:var(--text-muted);font-size:0.85rem;"><?= htmlspecialchars($order->buyer_email) ?></td>
-        <td><span class="dl-order-total">RM <?= number_format($order->total, 2) ?></span></td>
+        <td><span class="dl-order-total">S$ <?= number_format($order->total, 2) ?></span></td>
         <td><span class="dl-status-badge dl-status-badge--<?= $status_class ?>"><?= ucfirst($order->status) ?></span></td>
         <td style="color:var(--text-muted);font-size:0.85rem;"><?= date('d M Y', strtotime($order->created_at)) ?></td>
         <td>

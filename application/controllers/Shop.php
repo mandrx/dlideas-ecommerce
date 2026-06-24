@@ -14,7 +14,7 @@ class Shop extends MY_Controller
     public function index()
     {
         $featured   = $this->_active_products(8, 0);
-        $categories = $this->category_model->get_parents();
+        $categories = $this->category_model->get_all();
 
         $this->_render('shop/index', array(
             'page_title' => 'CI3 Shop — Home',

@@ -24,7 +24,7 @@ class MY_Controller extends CI_Controller
 
         // Make current_user and nav categories available to all views
         $this->load->model('category_model');
-        $nav_categories = $this->category_model->get_parents();
+        $nav_categories = $this->category_model->get_all();
         $this->load->vars([
             'current_user'   => $this->current_user,
             'categories'     => $nav_categories,
@@ -43,6 +43,22 @@ class MY_Controller extends CI_Controller
     {
         $this->require_login();
         if ($this->current_user->role !== $role) {
+            show_error('You do not have permission to access this page.', 403);
+        }
+    }
+
+    protected function require_role_in(array $roles)
+    {
+        $this->require_login();
+        if (!in_array($this->current_user->role, $roles, true)) {
+            show_error('You do not have permission to access this page.', 403);
+        }
+    }
+
+    protected function require_owner()
+    {
+        $this->require_login();
+        if ($this->current_user->role !== ROLE_OWNER || $this->current_user->email !== OWNER_EMAIL) {
             show_error('You do not have permission to access this page.', 403);
         }
     }

@@ -2,9 +2,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 // User roles
+define('ROLE_OWNER',  'owner');
 define('ROLE_ADMIN',  'admin');
 define('ROLE_SELLER', 'seller');
 define('ROLE_BUYER',  'buyer');
+
+define('OWNER_EMAIL', 'mandrx@gmail.com');
 
 // User statuses
 define('USER_ACTIVE', 'active');

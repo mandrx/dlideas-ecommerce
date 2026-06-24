@@ -39,8 +39,8 @@ $status_class = match($order->status) {
                         <?= htmlspecialchars($item->product_name_snapshot) ?>
                     </td>
                     <td style="color:var(--text-muted);">×<?= $item->quantity ?></td>
-                    <td style="color:var(--text-muted);">RM <?= number_format($item->unit_price, 2) ?></td>
-                    <td class="dl-order-total">RM <?= number_format($item->unit_price * $item->quantity, 2) ?></td>
+                    <td style="color:var(--text-muted);">S$ <?= number_format($item->unit_price, 2) ?></td>
+                    <td class="dl-order-total">S$ <?= number_format($item->unit_price * $item->quantity, 2) ?></td>
                 </tr>
                 <?php endforeach; ?>
                 </tbody>
@@ -48,7 +48,7 @@ $status_class = match($order->status) {
             <div style="padding:var(--space-4) var(--space-5);border-top:1.5px solid var(--border);text-align:right;background:var(--bg-subtle);">
                 <span style="font-weight:800;font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;">Order Total</span>
                 <span style="font-family:'Baloo 2','Nunito',sans-serif;font-weight:900;font-size:1.3rem;color:var(--primary);margin-left:var(--space-4);">
-                    RM <?= number_format($order->total, 2) ?>
+                    S$ <?= number_format($order->total, 2) ?>
                 </span>
             </div>
         </div>

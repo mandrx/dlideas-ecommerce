@@ -67,6 +67,24 @@ $route['admin/coupons/(:num)/toggle']   = 'admin/toggle_coupon/$1';
 $route['admin/reviews']                 = 'admin/reviews';
 $route['admin/reviews/(:num)/approve']  = 'admin/approve_review/$1';
 $route['admin/reviews/(:num)/reject']   = 'admin/reject_review/$1';
+$route['admin/contact-messages']              = 'admin/contact_messages';
+$route['admin/contact-messages/(:num)']       = 'admin/view_message/$1';
+$route['admin/categories']                    = 'admin/categories';
+$route['admin/categories/new']                = 'admin/category_form';
+$route['admin/categories/edit/(:num)']        = 'admin/category_form/$1';
+$route['admin/categories/save']               = 'admin/category_save';
+$route['admin/categories/delete/(:num)']      = 'admin/category_delete/$1';
+
+// Static pages
+$route['help-center']         = 'pages/help_center';
+$route['returns']             = 'pages/returns';
+$route['contact/submit']      = 'pages/contact_submit';
+$route['contact']             = 'pages/contact';
+$route['vendor-guidelines']   = 'pages/vendor_guidelines';
+$route['press']               = 'pages/press';
+$route['careers']             = 'pages/careers';
+$route['trust-safety']        = 'pages/trust_safety';
+$route['our-story']           = 'pages/our_story';
 
 // Internal JSON API (for Vue components)
 $route['api/search']                    = 'api/search';
