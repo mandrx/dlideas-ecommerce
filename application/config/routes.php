@@ -68,6 +68,17 @@ $route['admin/reviews']                 = 'admin/reviews';
 $route['admin/reviews/(:num)/approve']  = 'admin/approve_review/$1';
 $route['admin/reviews/(:num)/reject']   = 'admin/reject_review/$1';
 
+// Static pages
+$route['help-center']         = 'pages/help_center';
+$route['returns']             = 'pages/returns';
+$route['contact']             = 'pages/contact';
+$route['vendor-guidelines']   = 'pages/vendor_guidelines';
+$route['press']               = 'pages/press';
+$route['careers']             = 'pages/careers';
+$route['trust-safety']        = 'pages/trust_safety';
+$route['our-story']           = 'pages/our_story';
+$route['contact/submit']      = 'pages/contact_submit';
+
 // Internal JSON API (for Vue components)
 $route['api/search']                    = 'api/search';
 $route['api/cart/summary']              = 'api/cart_summary';
