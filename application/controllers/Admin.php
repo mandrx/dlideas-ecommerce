@@ -235,6 +235,7 @@ class Admin extends MY_Controller
 
     public function contact_messages()
     {
+        $this->require_owner();
         $this->_render('admin/contact_messages', [
             'page_title' => 'Contact Messages',
             'messages'   => $this->contact_model->get_all(),
@@ -243,6 +244,7 @@ class Admin extends MY_Controller
 
     public function view_message($id)
     {
+        $this->require_owner();
         $message = $this->contact_model->get_by_id($id);
         if (!$message) {
             show_404();
