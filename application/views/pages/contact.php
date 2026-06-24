@@ -73,7 +73,7 @@
             </div>
 
             <form class="dl-contact-form" id="contactForm" method="POST" action="<?= site_url('contact/submit') ?>">
-                <?= $this->security->get_csrf_field() ?>
+                <input type="hidden" name="<?= $this->security->get_csrf_token_name() ?>" value="<?= $this->security->get_csrf_hash() ?>">
                 <div class="dl-form-row">
                     <div class="dl-form-group">
                         <label for="contact_name">Your Name</label>
