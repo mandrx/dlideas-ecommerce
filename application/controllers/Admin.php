@@ -6,7 +6,7 @@ class Admin extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->require_role_in([ROLE_ADMIN, ROLE_OWNER]);
+        $this->require_role(ROLE_ADMIN);
         $this->load->model(['user_model', 'store_model', 'product_model', 'order_model', 'review_model', 'coupon_model', 'contact_model', 'category_model']);
     }
 
@@ -235,7 +235,6 @@ class Admin extends MY_Controller
 
     public function contact_messages()
     {
-        $this->require_owner();
         $this->_render('admin/contact_messages', [
             'page_title' => 'Contact Messages',
             'messages'   => $this->contact_model->get_all(),
@@ -244,7 +243,6 @@ class Admin extends MY_Controller
 
     public function view_message($id)
     {
-        $this->require_owner();
         $message = $this->contact_model->get_by_id($id);
         if (!$message) {
             show_404();
