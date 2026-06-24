@@ -27,12 +27,14 @@ class Pages extends MY_Controller
     {
         if ($this->input->server('REQUEST_METHOD') !== 'POST') {
             redirect('contact');
+            return;
         }
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('name',    'Name',    'required|max_length[150]');
         $this->form_validation->set_rules('email',   'Email',   'required|valid_email');
         $this->form_validation->set_rules('message', 'Message', 'required|max_length[2000]');
+        $this->form_validation->set_rules('subject', 'Subject', 'in_list[General Enquiry,Order Issue,Return Request,Seller Enquiry,Portfolio / Hire Ahmad,Other]|max_length[100]');
 
         if (!$this->form_validation->run()) {
             $this->session->set_flashdata('error', validation_errors(' ', ' '));
@@ -42,10 +44,10 @@ class Pages extends MY_Controller
 
         $this->load->model('Contact_model');
         $saved = $this->Contact_model->save([
-            'name'       => $this->input->post('name'),
-            'email'      => $this->input->post('email'),
-            'subject'    => $this->input->post('subject') ?: 'General Enquiry',
-            'message'    => $this->input->post('message'),
+            'name'       => $this->input->post('name', TRUE),
+            'email'      => $this->input->post('email', TRUE),
+            'subject'    => $this->input->post('subject', TRUE) ?: 'General Enquiry',
+            'message'    => $this->input->post('message', TRUE),
             'ip_address' => $this->input->ip_address(),
         ]);
 
