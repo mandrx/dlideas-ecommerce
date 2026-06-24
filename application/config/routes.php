@@ -69,6 +69,11 @@ $route['admin/reviews/(:num)/approve']  = 'admin/approve_review/$1';
 $route['admin/reviews/(:num)/reject']   = 'admin/reject_review/$1';
 $route['admin/contact-messages']              = 'admin/contact_messages';
 $route['admin/contact-messages/(:num)']       = 'admin/view_message/$1';
+$route['admin/categories']                    = 'admin/categories';
+$route['admin/categories/new']                = 'admin/category_form';
+$route['admin/categories/edit/(:num)']        = 'admin/category_form/$1';
+$route['admin/categories/save']               = 'admin/category_save';
+$route['admin/categories/delete/(:num)']      = 'admin/category_delete/$1';
 
 // Static pages
 $route['help-center']         = 'pages/help_center';
