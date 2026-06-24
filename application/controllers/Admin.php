@@ -6,8 +6,8 @@ class Admin extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->require_role(ROLE_ADMIN);
-        $this->load->model(['user_model', 'store_model', 'product_model', 'order_model', 'review_model', 'coupon_model', 'contact_model']);
+        $this->require_role_in([ROLE_ADMIN, ROLE_OWNER]);
+        $this->load->model(['user_model', 'store_model', 'product_model', 'order_model', 'review_model', 'coupon_model', 'contact_model', 'category_model']);
     }
 
     public function dashboard()
@@ -235,6 +235,7 @@ class Admin extends MY_Controller
 
     public function contact_messages()
     {
+        $this->require_owner();
         $this->_render('admin/contact_messages', [
             'page_title' => 'Contact Messages',
             'messages'   => $this->contact_model->get_all(),
@@ -243,6 +244,7 @@ class Admin extends MY_Controller
 
     public function view_message($id)
     {
+        $this->require_owner();
         $message = $this->contact_model->get_by_id($id);
         if (!$message) {
             show_404();
@@ -251,6 +253,92 @@ class Admin extends MY_Controller
             'page_title' => 'Message #' . $id,
             'message'    => $message,
         ]);
+    }
+
+    // --- Categories ---
+
+    public function categories()
+    {
+        $this->_render('admin/categories', [
+            'page_title'  => 'Manage Categories',
+            'categories'  => $this->category_model->get_all_with_parent(),
+        ]);
+    }
+
+    public function category_form($id = NULL)
+    {
+        $category = $id ? $this->category_model->find($id) : NULL;
+        if ($id && !$category) {
+            show_404();
+        }
+        $this->_render('admin/category_form', [
+            'page_title' => $id ? 'Edit Category' : 'New Category',
+            'category'   => $category,
+        ]);
+    }
+
+    public function category_save()
+    {
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('name', 'Name', 'required|max_length[100]');
+        $this->form_validation->set_rules('sort_order', 'Sort Order', 'integer');
+
+        $id = (int) $this->input->post('id');
+
+        if (!$this->form_validation->run()) {
+            return $this->category_form($id ?: NULL);
+        }
+
+        $data = [
+            'name'       => $this->input->post('name'),
+            'sort_order' => (int) $this->input->post('sort_order'),
+        ];
+
+        // Handle image upload
+        if (!empty($_FILES['image']['name'])) {
+            $upload_path = FCPATH . 'assets/img/categories/';
+            if (!is_dir($upload_path)) {
+                mkdir($upload_path, 0755, TRUE);
+            }
+            $this->load->library('upload', [
+                'upload_path'   => $upload_path,
+                'allowed_types' => 'jpg|jpeg|png|gif|webp',
+                'max_size'      => 2048,
+                'file_name'     => 'cat-' . uniqid(),
+            ]);
+            if ($this->upload->do_upload('image')) {
+                $info = $this->upload->data();
+                $data['image'] = 'assets/img/categories/' . $info['file_name'];
+
+                // Delete old image on edit
+                if ($id) {
+                    $old = $this->category_model->find($id);
+                    if ($old && !empty($old->image) && file_exists(FCPATH . $old->image)) {
+                        @unlink(FCPATH . $old->image);
+                    }
+                }
+            } else {
+                $this->session->set_flashdata('error', $this->upload->display_errors('', ''));
+                return redirect('admin/categories' . ($id ? '/edit/' . $id : '/new'));
+            }
+        }
+
+        if ($id) {
+            $this->category_model->update($id, $data);
+            $this->session->set_flashdata('success', 'Category updated.');
+        } else {
+            $this->category_model->create($data);
+            $this->session->set_flashdata('success', 'Category created.');
+        }
+
+        redirect('admin/categories');
+    }
+
+    public function category_delete($id)
+    {
+        $this->category_model->delete($id);
+        $this->session->set_flashdata('success', 'Category deleted.');
+        redirect('admin/categories');
     }
 
     private function _render($view, $data = [])
