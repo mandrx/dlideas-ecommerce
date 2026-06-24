@@ -21,8 +21,8 @@
             <th>Email</th>
             <th>Subject</th>
             <th>Message</th>
-            <th>IP</th>
             <th>Date</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -32,9 +32,9 @@
         <td><?= htmlspecialchars($m->name) ?></td>
         <td><a href="mailto:<?= htmlspecialchars($m->email) ?>"><?= htmlspecialchars($m->email) ?></a></td>
         <td><span class="dl-badge dl-badge--info"><?= htmlspecialchars($m->subject) ?></span></td>
-        <td style="max-width:360px;white-space:pre-wrap;word-break:break-word;"><?= htmlspecialchars($m->message) ?></td>
-        <td style="font-size:.8rem;color:var(--dl-muted);"><?= htmlspecialchars($m->ip_address) ?></td>
+        <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--dl-muted);"><?= htmlspecialchars(mb_strimwidth($m->message, 0, 80, '…')) ?></td>
         <td style="white-space:nowrap;"><?= date('d M Y H:i', strtotime($m->created_at)) ?></td>
+        <td><a href="<?= base_url('admin/contact-messages/' . $m->id) ?>" class="dl-btn dl-btn-sm dl-btn-outline">View</a></td>
     </tr>
     <?php endforeach; ?>
     </tbody>

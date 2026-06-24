@@ -18,4 +18,12 @@ class Contact_model extends MY_Model
             ->get($this->table)
             ->result();
     }
+
+    public function get_by_id($id)
+    {
+        return $this->db
+            ->where('id', (int) $id)
+            ->get($this->table)
+            ->row();
+    }
 }

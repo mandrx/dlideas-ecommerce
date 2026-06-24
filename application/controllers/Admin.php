@@ -241,6 +241,18 @@ class Admin extends MY_Controller
         ]);
     }
 
+    public function view_message($id)
+    {
+        $message = $this->contact_model->get_by_id($id);
+        if (!$message) {
+            show_404();
+        }
+        $this->_render('admin/contact_message_detail', [
+            'page_title' => 'Message #' . $id,
+            'message'    => $message,
+        ]);
+    }
+
     private function _render($view, $data = [])
     {
         $data['content_view'] = $view;
