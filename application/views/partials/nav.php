@@ -4,6 +4,10 @@ function dl_nav_active($path, $current) {
     return ($path !== '' && strpos($current, $path) === 0) || ($path === '' && $current === '') ? 'active' : '';
 }
 ?>
+<div class="dl-demo-banner" role="alert">
+    <strong>Demo Build</strong> — A portfolio mock for <a href="https://dlideas.com/" target="_blank" rel="noopener">DL Ideas Pte. Ltd.</a> All content &amp; design &copy; DL Ideas Pte. Ltd. Products and sellers are fictional. <strong>Do not place real orders.</strong>
+    <a href="<?= base_url('our-story') ?>">Learn more</a>
+</div>
 <header class="dl-header">
     <div class="container">
         <div class="dl-header-top">
@@ -64,6 +68,7 @@ function dl_nav_active($path, $current) {
             <a href="<?= base_url('admin/orders') ?>" class="<?= dl_nav_active('admin/orders', $current_uri) ?>">Orders</a>
             <a href="<?= base_url('admin/coupons') ?>" class="<?= dl_nav_active('admin/coupons', $current_uri) ?>">Coupons</a>
             <a href="<?= base_url('admin/reviews') ?>" class="<?= dl_nav_active('admin/reviews', $current_uri) ?>">Reviews</a>
+            <a href="<?= base_url('admin/contact-messages') ?>" class="<?= dl_nav_active('admin/contact-messages', $current_uri) ?>">Messages</a>
         </nav>
         <?php endif; ?>
     </div>

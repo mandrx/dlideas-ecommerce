@@ -67,6 +67,7 @@ $route['admin/coupons/(:num)/toggle']   = 'admin/toggle_coupon/$1';
 $route['admin/reviews']                 = 'admin/reviews';
 $route['admin/reviews/(:num)/approve']  = 'admin/approve_review/$1';
 $route['admin/reviews/(:num)/reject']   = 'admin/reject_review/$1';
+$route['admin/contact-messages']        = 'admin/contact_messages';
 
 // Static pages
 $route['help-center']         = 'pages/help_center';

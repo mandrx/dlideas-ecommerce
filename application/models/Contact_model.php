@@ -10,4 +10,12 @@ class Contact_model extends MY_Model
     {
         return $this->db->insert($this->table, $data);
     }
+
+    public function get_all()
+    {
+        return $this->db
+            ->order_by('id', 'DESC')
+            ->get($this->table)
+            ->result();
+    }
 }

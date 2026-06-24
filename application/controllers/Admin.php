@@ -7,7 +7,7 @@ class Admin extends MY_Controller
     {
         parent::__construct();
         $this->require_role(ROLE_ADMIN);
-        $this->load->model(['user_model', 'store_model', 'product_model', 'order_model', 'review_model', 'coupon_model']);
+        $this->load->model(['user_model', 'store_model', 'product_model', 'order_model', 'review_model', 'coupon_model', 'contact_model']);
     }
 
     public function dashboard()
@@ -229,6 +229,16 @@ class Admin extends MY_Controller
     {
         $this->coupon_model->toggle_status($id);
         $this->redirect_with_message('admin/coupons', 'Coupon status updated.');
+    }
+
+    // --- Contact Messages ---
+
+    public function contact_messages()
+    {
+        $this->_render('admin/contact_messages', [
+            'page_title' => 'Contact Messages',
+            'messages'   => $this->contact_model->get_all(),
+        ]);
     }
 
     private function _render($view, $data = [])
