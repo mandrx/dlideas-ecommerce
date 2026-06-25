@@ -28,6 +28,11 @@ function close() {
   setTimeout(() => { open.value = false }, 150)
 }
 
+function submit() {
+  if (query.value.trim().length < 1) return
+  window.location = '/shop?q=' + encodeURIComponent(query.value.trim())
+}
+
 function formatPrice(p, sale) {
   return 'S$ ' + Number(sale || p).toFixed(2)
 }
@@ -38,11 +43,12 @@ function formatPrice(p, sale) {
     <input
       v-model="query"
       @blur="close"
+      @keydown.enter="submit"
       type="search"
       placeholder="Search for toys, games, electronics…"
       autocomplete="off"
     />
-    <button @click="open = results.length > 0" type="button">Search</button>
+    <button @click="submit" type="button">Search</button>
 
     <!-- Dropdown -->
     <div v-if="open"

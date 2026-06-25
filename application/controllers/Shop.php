@@ -28,21 +28,53 @@ class Shop extends MY_Controller
         $per_page = 20;
         $page     = max(1, (int) $this->input->get('page'));
         $offset   = ($page - 1) * $per_page;
+        $q        = trim($this->input->get('q'));
 
-        $products = $this->_active_products($per_page, $offset);
-        $total    = $this->db
-            ->from('products p')
-            ->join('stores s', 's.id = p.store_id')
-            ->where('p.status', PRODUCT_ACTIVE)
-            ->where('s.status', STORE_ACTIVE)
-            ->count_all_results();
+        $base = function() {
+            $this->db
+                ->from('products p')
+                ->join('stores s', 's.id = p.store_id')
+                ->where('p.status', PRODUCT_ACTIVE)
+                ->where('s.status', STORE_ACTIVE);
+        };
+
+        if ($q) {
+            $products = $this->db
+                ->select('p.*, s.name AS store_name, s.slug AS store_slug,
+                    (SELECT image_path FROM product_images WHERE product_id=p.id AND is_primary=1 LIMIT 1) AS primary_image')
+                ->from('products p')
+                ->join('stores s', 's.id = p.store_id')
+                ->where('p.status', PRODUCT_ACTIVE)
+                ->where('s.status', STORE_ACTIVE)
+                ->like('p.name', $q)
+                ->order_by('p.created_at', 'DESC')
+                ->limit($per_page, $offset)
+                ->get()->result();
+
+            $total = $this->db
+                ->from('products p')
+                ->join('stores s', 's.id = p.store_id')
+                ->where('p.status', PRODUCT_ACTIVE)
+                ->where('s.status', STORE_ACTIVE)
+                ->like('p.name', $q)
+                ->count_all_results();
+        } else {
+            $products = $this->_active_products($per_page, $offset);
+            $total    = $this->db
+                ->from('products p')
+                ->join('stores s', 's.id = p.store_id')
+                ->where('p.status', PRODUCT_ACTIVE)
+                ->where('s.status', STORE_ACTIVE)
+                ->count_all_results();
+        }
 
         $this->_render('shop/index', array(
-            'page_title' => 'All Products',
+            'page_title' => $q ? 'Search: ' . $q : 'All Products',
             'products'   => $products,
             'total'      => $total,
             'per_page'   => $per_page,
             'page'       => $page,
+            'q'          => $q,
         ));
     }
 

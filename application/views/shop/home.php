@@ -43,7 +43,7 @@
 <?php endif; ?>
 
 <!-- Random Products -->
-<h2 class="dl-section-title">
+<h2 class="dl-section-title" style="margin-top: var(--space-8)">
     Top Picks For You
     <a href="<?= base_url('shop') ?>">See all &rarr;</a>
 </h2>

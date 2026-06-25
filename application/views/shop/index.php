@@ -1,8 +1,11 @@
 <div class="dl-category-header">
     <div>
-        <h2>All Products</h2>
+        <h2><?= !empty($q) ? 'Results for &ldquo;' . htmlspecialchars($q) . '&rdquo;' : 'All Products' ?></h2>
         <p class="dl-category-count"><?= $total ?> product<?= $total !== 1 ? 's' : '' ?> found</p>
     </div>
+    <?php if (!empty($q)): ?>
+    <a href="<?= base_url('shop') ?>" class="dl-btn-ghost" style="font-size:.9rem;">Clear search</a>
+    <?php endif; ?>
 </div>
 
 <?php if (empty($products)): ?>
