@@ -326,3 +326,30 @@ INSERT INTO `product_tags` (`product_id`, `tag`) VALUES
 ((SELECT id FROM products WHERE slug='fc-dino-edition-colour-pencils-12'),         'colour-pencils'),
 ((SELECT id FROM products WHERE slug='fc-dino-edition-colour-pencils-12'),         'faber-castell'),
 ((SELECT id FROM products WHERE slug='fc-dino-edition-colour-pencils-12'),         'special-edition');
+
+-- ---------------------------------------------------------------
+-- Visitor Tracking
+-- ---------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `visitor_ips` (
+  `id`           INT          NOT NULL AUTO_INCREMENT,
+  `ip_address`   VARCHAR(45)  NOT NULL,
+  `country_code` VARCHAR(2)   DEFAULT NULL,
+  `country_name` VARCHAR(100) DEFAULT NULL,
+  `resolved_at`  DATETIME     NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_visitor_ips_ip` (`ip_address`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `visitor_logs` (
+  `id`         INT          NOT NULL AUTO_INCREMENT,
+  `ip_id`      INT          NOT NULL,
+  `uri`        VARCHAR(500) NOT NULL DEFAULT '',
+  `user_agent` VARCHAR(500) NOT NULL DEFAULT '',
+  `is_bot`     TINYINT(1)   NOT NULL DEFAULT 0,
+  `user_id`    INT          DEFAULT NULL,
+  `created_at` DATETIME     NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_visitor_logs_ip_id` (`ip_id`),
+  KEY `idx_visitor_logs_created_at` (`created_at`),
+  CONSTRAINT `fk_visitor_logs_ip` FOREIGN KEY (`ip_id`) REFERENCES `visitor_ips` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
