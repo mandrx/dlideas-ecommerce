@@ -7,7 +7,7 @@ class Admin extends MY_Controller
     {
         parent::__construct();
         $this->require_role(ROLE_ADMIN);
-        $this->load->model(['user_model', 'store_model', 'product_model', 'order_model', 'review_model', 'coupon_model', 'contact_model', 'category_model']);
+        $this->load->model(['user_model', 'store_model', 'product_model', 'order_model', 'review_model', 'coupon_model', 'contact_model', 'category_model', 'visitor_model']);
     }
 
     public function dashboard()
@@ -352,6 +352,58 @@ class Admin extends MY_Controller
         $this->category_model->delete($id);
         $this->session->set_flashdata('success', 'Category deleted.');
         redirect('admin/categories');
+    }
+
+    // --- Visitors ---
+
+    public function visitors()
+    {
+        $this->require_owner();
+
+        $limit  = 25;
+        $page   = max(1, (int) $this->input->get('page'));
+        $offset = ($page - 1) * $limit;
+
+        $filters = [
+            'date_from' => $this->input->get('date_from') ?: '',
+            'date_to'   => $this->input->get('date_to')   ?: '',
+            'country'   => $this->input->get('country')   ?: '',
+            'bot'       => $this->input->get('bot')        ?: '',
+        ];
+
+        $total = $this->visitor_model->count_logs($filters);
+
+        $this->load->library('pagination');
+        $this->pagination->initialize([
+            'base_url'             => base_url('admin/visitors'),
+            'total_rows'           => $total,
+            'per_page'             => $limit,
+            'uri_segment'          => 0,
+            'use_page_numbers'     => TRUE,
+            'query_string_segment' => 'page',
+            'full_tag_open'        => '<ul class="pagination mb-0">',
+            'full_tag_close'       => '</ul>',
+            'first_tag_open'       => '<li class="page-item">',  'first_tag_close' => '</li>',
+            'last_tag_open'        => '<li class="page-item">',  'last_tag_close'  => '</li>',
+            'next_tag_open'        => '<li class="page-item">',  'next_tag_close'  => '</li>',
+            'prev_tag_open'        => '<li class="page-item">',  'prev_tag_close'  => '</li>',
+            'cur_tag_open'         => '<li class="page-item active"><a class="page-link" href="#">',
+            'cur_tag_close'        => '</a></li>',
+            'num_tag_open'         => '<li class="page-item">',  'num_tag_close'   => '</li>',
+            'num_links'            => 3,
+            'attributes'           => ['class' => 'page-link'],
+            'reuse_query_string'   => TRUE,
+        ]);
+
+        $this->_render('admin/visitors', [
+            'page_title'    => 'Visitor Analytics',
+            'stats'         => $this->visitor_model->get_stats(),
+            'top_countries' => $this->visitor_model->get_top_countries(5),
+            'logs'          => $this->visitor_model->get_logs($filters, $limit, $offset),
+            'total'         => $total,
+            'filters'       => $filters,
+            'pagination'    => $this->pagination->create_links(),
+        ]);
     }
 
     private function _render($view, $data = [])

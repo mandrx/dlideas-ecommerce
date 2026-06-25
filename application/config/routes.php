@@ -74,6 +74,7 @@ $route['admin/categories/new']                = 'admin/category_form';
 $route['admin/categories/edit/(:num)']        = 'admin/category_form/$1';
 $route['admin/categories/save']               = 'admin/category_save';
 $route['admin/categories/delete/(:num)']      = 'admin/category_delete/$1';
+$route['admin/visitors']                      = 'admin/visitors';
 
 // Static pages
 $route['help-center']         = 'pages/help_center';
