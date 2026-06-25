@@ -30,7 +30,7 @@
     <a href="<?= base_url('shop/' . $cat->slug) ?>" class="dl-cat-card">
         <div class="dl-cat-icon">
             <?php if ($cat_img): ?>
-                <img src="<?= $cat_img ?>" alt="<?= htmlspecialchars($cat->name) ?>"
+                <img src="<?= htmlspecialchars($cat_img, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($cat->name, ENT_QUOTES, 'UTF-8') ?>"
                      style="width:52px;height:52px;object-fit:contain;" loading="lazy">
             <?php else: ?>
                 <?= $icon ?>
