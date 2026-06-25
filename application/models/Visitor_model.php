@@ -40,7 +40,7 @@ class Visitor_model extends CI_Model
     private function _resolve_country($ip)
     {
         $url  = 'http://ip-api.com/json/' . urlencode($ip) . '?fields=countryCode,country';
-        $ctx  = stream_context_create(['http' => ['timeout' => 3]]);
+        $ctx  = stream_context_create(['http' => ['timeout' => 1]]);
         $resp = @file_get_contents($url, false, $ctx);
 
         if ($resp === false) {

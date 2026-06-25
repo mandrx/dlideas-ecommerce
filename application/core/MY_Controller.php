@@ -82,14 +82,7 @@ class MY_Controller extends CI_Controller
 
     private function _track_visit()
     {
-        // Get real client IP (proxy-aware)
-        $forwarded = $this->input->server('HTTP_X_FORWARDED_FOR');
-        if ($forwarded) {
-            $parts = explode(',', $forwarded);
-            $ip = trim($parts[0]);
-        } else {
-            $ip = $this->input->server('REMOTE_ADDR');
-        }
+        $ip = $this->input->ip_address();
 
         $uri     = $this->uri->uri_string();
         $ua      = (string) $this->input->user_agent();
