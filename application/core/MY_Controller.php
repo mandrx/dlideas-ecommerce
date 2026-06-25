@@ -29,6 +29,9 @@ class MY_Controller extends CI_Controller
             'current_user'   => $this->current_user,
             'categories'     => $nav_categories,
         ]);
+
+        $this->load->model('visitor_model');
+        $this->_track_visit();
     }
 
     protected function require_login()
@@ -75,5 +78,23 @@ class MY_Controller extends CI_Controller
     {
         $this->session->set_flashdata($type, $message);
         redirect($url);
+    }
+
+    private function _track_visit()
+    {
+        // Get real client IP (proxy-aware)
+        $forwarded = $this->input->server('HTTP_X_FORWARDED_FOR');
+        if ($forwarded) {
+            $parts = explode(',', $forwarded);
+            $ip = trim($parts[0]);
+        } else {
+            $ip = $this->input->server('REMOTE_ADDR');
+        }
+
+        $uri     = $this->uri->uri_string();
+        $ua      = (string) $this->input->user_agent();
+        $user_id = $this->current_user ? $this->current_user->id : null;
+
+        $this->visitor_model->log_visit($ip, $uri, $ua, $user_id);
     }
 }
