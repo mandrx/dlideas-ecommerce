@@ -136,7 +136,6 @@ img { max-width: 100%; display: block; }
     display: flex;
     border: 2px solid var(--border);
     border-radius: var(--radius-pill);
-    overflow: hidden;
     transition: border-color var(--t-fast) var(--ease-out),
                 box-shadow var(--t-fast) var(--ease-out);
 }
@@ -155,6 +154,7 @@ img { max-width: 100%; display: block; }
     font-family: 'Nunito', sans-serif;
     color: var(--text-dark);
     background: transparent;
+    border-radius: var(--radius-pill) 0 0 var(--radius-pill);
 }
 
 .dl-search input::placeholder { color: var(--text-muted); }
@@ -169,6 +169,7 @@ img { max-width: 100%; display: block; }
     cursor: pointer;
     transition: background var(--t-fast) var(--ease-out);
     white-space: nowrap;
+    border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
 }
 
 .dl-search button:hover { background: var(--primary-hover); }
