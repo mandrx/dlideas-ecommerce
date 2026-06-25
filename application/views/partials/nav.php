@@ -71,6 +71,7 @@ function dl_nav_active($path, $current) {
             <a href="<?= base_url('admin/reviews') ?>" class="<?= dl_nav_active('admin/reviews', $current_uri) ?>">Reviews</a>
             <?php if (isset($current_user) && $current_user->role === 'owner'): ?>
             <a href="<?= base_url('admin/contact-messages') ?>" class="<?= dl_nav_active('admin/contact-messages', $current_uri) ?>">Messages</a>
+            <a href="<?= base_url('admin/visitors') ?>" class="<?= dl_nav_active('admin/visitors', $current_uri) ?>">Visitors</a>
             <?php endif; ?>
         </nav>
         <?php endif; ?>
