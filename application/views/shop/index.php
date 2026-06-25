@@ -1,54 +1,11 @@
-<!-- Hero -->
-<section class="dl-hero">
-    <img src="<?= base_url('assets/img/hero-bg.png') ?>" alt="" class="dl-hero-bg" aria-hidden="true">
-    <div class="dl-hero-content">
-        <h1>Discover <span>Fun</span> &amp; Learning!</h1>
-        <p>Singapore's trusted marketplace for kids, teens, and everyone in between.<br>Shop unique items from verified local sellers.</p>
-        <div class="dl-hero-search">
-            <input type="text" placeholder="Search products, brands, categories…" id="hero-search-input"
-                   aria-label="Search products"
-                   onkeydown="if(event.key==='Enter')window.location='<?= base_url('shop') ?>?q='+encodeURIComponent(this.value)">
-            <button onclick="window.location='<?= base_url('shop') ?>?q='+encodeURIComponent(document.getElementById('hero-search-input').value)">
-                Search
-            </button>
-        </div>
+<div class="dl-category-header">
+    <div>
+        <h2>All Products</h2>
+        <p class="dl-category-count"><?= $total ?> product<?= $total !== 1 ? 's' : '' ?> found</p>
     </div>
-</section>
-
-<!-- Categories -->
-<?php if (!empty($categories)): ?>
-<h2 class="dl-section-title">Top Categories</h2>
-<div class="dl-categories">
-    <?php
-    $cat_icons = ['🧩','🤖','🎨','🏹','📚','🎮','🏃','⚽','🎵','🔬'];
-    $i = 0;
-    foreach ($categories as $cat):
-        $icon = $cat_icons[$i % count($cat_icons)];
-        $cat_img = !empty($cat->image) ? base_url($cat->image) : null;
-        $i++;
-    ?>
-    <a href="<?= base_url('shop/' . $cat->slug) ?>" class="dl-cat-card">
-        <div class="dl-cat-icon">
-            <?php if ($cat_img): ?>
-                <img src="<?= $cat_img ?>" alt="<?= htmlspecialchars($cat->name) ?>"
-                     style="width:52px;height:52px;object-fit:contain;" loading="lazy">
-            <?php else: ?>
-                <?= $icon ?>
-            <?php endif; ?>
-        </div>
-        <div class="dl-cat-name"><?= htmlspecialchars($cat->name) ?></div>
-    </a>
-    <?php endforeach; ?>
 </div>
-<?php endif; ?>
 
-<!-- Featured Products -->
-<h2 class="dl-section-title">
-    Top Picks For You
-    <a href="<?= base_url('shop') ?>">See all &rarr;</a>
-</h2>
-
-<?php if (empty($featured)): ?>
+<?php if (empty($products)): ?>
 <div class="dl-empty-state">
     <div class="dl-empty-state-icon">🛍️</div>
     <h3>No products yet</h3>
@@ -57,8 +14,23 @@
 </div>
 <?php else: ?>
 <div class="dl-product-grid">
-    <?php foreach ($featured as $product): ?>
+    <?php foreach ($products as $product): ?>
         <?php $this->load->view('partials/product_card', ['product' => $product]); ?>
     <?php endforeach; ?>
 </div>
+
+<?php
+$total_pages = ceil($total / $per_page);
+if ($total_pages > 1):
+?>
+<nav aria-label="Page navigation">
+    <ul class="dl-pagination pagination">
+        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+            <li class="page-item <?= $i === $page ? 'active' : '' ?>">
+                <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+            </li>
+        <?php endfor; ?>
+    </ul>
+</nav>
+<?php endif; ?>
 <?php endif; ?>

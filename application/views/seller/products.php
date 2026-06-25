@@ -19,6 +19,7 @@
     <thead>
         <tr>
             <th>#</th>
+            <th style="width:52px;"></th>
             <th>Name</th>
             <th>Category</th>
             <th>Price</th>
@@ -36,6 +37,14 @@
     ?>
     <tr>
         <td style="color:var(--text-muted);font-size:0.82rem;"><?= $p->id ?></td>
+        <td style="padding:6px 8px;">
+            <?php if (!empty($p->primary_image)): ?>
+            <img src="<?= base_url($p->primary_image) ?>" alt=""
+                 style="width:44px;height:44px;object-fit:cover;border-radius:6px;display:block;">
+            <?php else: ?>
+            <div style="width:44px;height:44px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:1.2rem;">📦</div>
+            <?php endif; ?>
+        </td>
         <td style="font-weight:700;color:var(--text-dark);max-width:220px;">
             <a href="<?= base_url('seller/products/edit/' . $p->id) ?>"
                style="color:inherit;transition:color var(--t-fast);"

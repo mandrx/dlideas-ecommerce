@@ -153,9 +153,85 @@ INSERT INTO `product_images` (`product_id`, `image_path`, `is_primary`, `sort_or
 (10,'uploads/products/journal-main.jpg',      1, 0);
 
 -- ---------------------------------------------------------------
--- Product Tags
+-- Categories — Sports (parent + sub-categories)
+-- ---------------------------------------------------------------
+INSERT INTO `categories` (`parent_id`, `name`, `slug`, `sort_order`) VALUES
+(NULL, 'Sports', 'sports', 5);
+
+-- Sub-categories under Sports (parent_id = last insert; assume id = 5)
+INSERT INTO `categories` (`parent_id`, `name`, `slug`, `sort_order`) VALUES
+((SELECT id FROM (SELECT id FROM categories WHERE slug = 'sports') AS t), 'Safety Gear',   'safety-gear',   1),
+((SELECT id FROM (SELECT id FROM categories WHERE slug = 'sports') AS t), 'Basketball',     'basketball',     2),
+((SELECT id FROM (SELECT id FROM categories WHERE slug = 'sports') AS t), 'Tennis',         'tennis',         3),
+((SELECT id FROM (SELECT id FROM categories WHERE slug = 'sports') AS t), 'Soccer',         'soccer',         4),
+((SELECT id FROM (SELECT id FROM categories WHERE slug = 'sports') AS t), 'Water Sports',   'water-sports',   5);
+
+-- ---------------------------------------------------------------
+-- Products — Alice Tech Store (store_id = 1) — Sports Kids
+-- category_ids resolved via subquery to be safe
+-- ---------------------------------------------------------------
+INSERT INTO `products` (`store_id`, `category_id`, `name`, `slug`, `description`, `price`, `stock`, `status`) VALUES
+
+(1, (SELECT id FROM categories WHERE slug = 'safety-gear'),
+ 'Kids Dino Helmet',
+ 'kids-dino-helmet',
+ 'Make safety fun! This lightweight, durable helmet features a cool green dinosaur graphic and integrated ventilation. The dial-fit system ensures a secure, comfortable fit for growing explorers. Age range: 4-8 Years. Head circumference: 52-56 cm. 12 ventilation vents.',
+ 49.50, 50, 'active'),
+
+(1, (SELECT id FROM categories WHERE slug = 'basketball'),
+ 'Mini Basketball Hoop',
+ 'mini-basketball-hoop',
+ 'Perfect for indoor or outdoor play. This sturdy, portable hoop system features a durable red, white, and blue backboard, and a classic rim with an all-weather net. Age range: 6-12 Years. Wall/Door mount. Assembly required.',
+ 129.90, 30, 'active'),
+
+(1, (SELECT id FROM categories WHERE slug = 'tennis'),
+ 'Kids Tennis Set',
+ 'kids-tennis-set',
+ 'Get ready to serve! This set includes two lightweight pink rackets, perfectly balanced for smaller hands, and a soft, low-compression tennis ball to help beginners learn without frustration. Age range: 5-9 Years. Racket length: 23 inches. Aluminum frame.',
+ 65.00, 40, 'active'),
+
+(1, (SELECT id FROM categories WHERE slug = 'soccer'),
+ 'Kids Soccer Ball Size 3',
+ 'kids-soccer-ball-size-3',
+ 'Develop skills and have fun. This Size 3 ball features a classic stitched panel design for durability and a bright yellow and green pattern that is easy for young players to track. Age range: 4-8 Years. Stitched synthetic leather.',
+ 24.90, 100, 'active'),
+
+(1, (SELECT id FROM categories WHERE slug = 'water-sports'),
+ 'Kids Swim Vest',
+ 'kids-swim-vest',
+ 'Build confidence in the water! This comfortable neoprene swim vest provides essential flotation assistance for young learners. Features adjustable safety straps for a secure fit. Age range: 3-6 Years. Weight range: 15-25 kg. Neoprene material.',
+ 58.00, 60, 'active');
+
+-- ---------------------------------------------------------------
+-- Product Images — Sports products
+-- product IDs referenced by name to handle variable auto-increment
+-- ---------------------------------------------------------------
+INSERT INTO `product_images` (`product_id`, `image_path`, `is_primary`, `sort_order`) VALUES
+((SELECT id FROM products WHERE slug = 'kids-dino-helmet'),    'uploads/products/kids-dino-helmet.jpg',     1, 0),
+((SELECT id FROM products WHERE slug = 'mini-basketball-hoop'),'uploads/products/mini-basketball-hoop.jpg', 1, 0),
+((SELECT id FROM products WHERE slug = 'kids-tennis-set'),     'uploads/products/kids-tennis-set.jpg',      1, 0),
+((SELECT id FROM products WHERE slug = 'kids-soccer-ball-size-3'), 'uploads/products/kids-soccer-ball.jpg', 1, 0),
+((SELECT id FROM products WHERE slug = 'kids-swim-vest'),      'uploads/products/kids-swim-vest.jpg',       1, 0);
+
+-- ---------------------------------------------------------------
+-- Product Tags — Sports products
 -- ---------------------------------------------------------------
 INSERT INTO `product_tags` (`product_id`, `tag`) VALUES
+((SELECT id FROM products WHERE slug='kids-dino-helmet'),      'kids'),
+((SELECT id FROM products WHERE slug='kids-dino-helmet'),      'helmet'),
+((SELECT id FROM products WHERE slug='kids-dino-helmet'),      'safety'),
+((SELECT id FROM products WHERE slug='mini-basketball-hoop'),  'basketball'),
+((SELECT id FROM products WHERE slug='mini-basketball-hoop'),  'hoop'),
+((SELECT id FROM products WHERE slug='mini-basketball-hoop'),  'kids'),
+((SELECT id FROM products WHERE slug='kids-tennis-set'),       'tennis'),
+((SELECT id FROM products WHERE slug='kids-tennis-set'),       'racket'),
+((SELECT id FROM products WHERE slug='kids-tennis-set'),       'kids'),
+((SELECT id FROM products WHERE slug='kids-soccer-ball-size-3'),'soccer'),
+((SELECT id FROM products WHERE slug='kids-soccer-ball-size-3'),'ball'),
+((SELECT id FROM products WHERE slug='kids-soccer-ball-size-3'),'kids'),
+((SELECT id FROM products WHERE slug='kids-swim-vest'),        'swim'),
+((SELECT id FROM products WHERE slug='kids-swim-vest'),        'vest'),
+((SELECT id FROM products WHERE slug='kids-swim-vest'),        'water-safety'),
 (1, 'wireless'), (1, 'earbuds'),   (1, 'bluetooth'), (1, 'anc'),
 (2, 'charger'),  (2, 'usb-c'),    (2, 'gan'),        (2, 'fast-charge'),
 (3, 'keyboard'), (3, 'mechanical'),(3, 'rgb'),        (3, 'gaming'),
@@ -163,3 +239,90 @@ INSERT INTO `product_tags` (`product_id`, `tag`) VALUES
 (7, 'sneakers'), (7, 'running'),  (7, 'women'),
 (8, 'tee'),      (8, 'streetwear'),(8, 'limited'),
 (10,'journal'),  (10,'stationery'),(10,'bullet-journal');
+
+-- ---------------------------------------------------------------
+-- Products — Stationery (category_id = 10) — Faber-Castell Colour Pencils
+-- ---------------------------------------------------------------
+INSERT INTO `products` (`store_id`, `category_id`, `name`, `slug`, `description`, `price`, `stock`, `status`) VALUES
+
+(1, 10, 'Faber-Castell Classic Colour Pencils 12L Slim-Flexi Case',
+ 'fc-classic-colour-pencils-12l-slim-flexi',
+ 'Permanent colour pencils in a standard hexagonal shape with vivid colours and a special bonding process for break resistance. Packed in a slim, portable flexi case. Available in 12 brilliant colours. Scan, watch and learn with Faber-Castell colouring products via the QR code on the packaging.',
+ 16.90, 80, 'active'),
+
+(1, 10, 'Faber-Castell Tri Colour Pencils 12L',
+ 'fc-tri-colour-pencils-12l',
+ 'Tri Colour Pencils with colour shades specially selected by art teachers. The triangular shape gives better control and comfort for children''s little fingers. Smooth leads with less breakage and minimum lead flake provide better coverage and brilliant effects on paper.',
+ 6.30, 100, 'active'),
+
+(1, 10, 'Faber-Castell Tri Colour Pencils 24',
+ 'fc-tri-colour-pencils-24',
+ 'Tri Colour Pencils with 24 art teacher-selected colour shades. The triangular barrel ensures a natural grip for small hands, while smooth leads with minimum breakage deliver vivid, even colour coverage on paper.',
+ 12.80, 80, 'active'),
+
+(1, 10, 'Faber-Castell Black Edition Colour Pencils 24',
+ 'fc-black-edition-colour-pencils-24',
+ 'Black Edition colour pencils with SuperSoft lead for wonderfully soft and vibrant colour laydown. High pigmentation makes them ideal for painting on light, coloured and dark paper. The ergonomic triangular shape ensures correct grip position and optimum comfort.',
+ 38.90, 40, 'active'),
+
+(1, 10, 'Faber-Castell Black Edition Colour Pencils 12',
+ 'fc-black-edition-colour-pencils-12',
+ 'Black Edition colour pencils with SuperSoft lead for a soft, vibrant colour laydown. Highly pigmented leads work beautifully on light, coloured and dark paper. Ergonomic triangular barrel ensures the correct grip and comfort when drawing.',
+ 19.90, 60, 'active'),
+
+(1, 10, 'Faber-Castell Grip Colour Pencils Tin of 36',
+ 'fc-grip-colour-pencils-tin-36',
+ 'The Colour Grip pencil features an ergonomic triangular barrel with a patented Soft-Grip zone for fatigue-free drawing. Highly pigmented leads deliver vivid colours. Includes 36 colours in an FSC-certified wooden barrel. Tin packaging keeps pencils organised.',
+ 99.00, 30, 'active'),
+
+(1, 10, 'Faber-Castell Unicorn Edition Classic Colour Pencils 12',
+ 'fc-unicorn-edition-colour-pencils-12',
+ 'Unicorn Edition Classic Colour Pencils — a magical 12-colour set in classic hexagonal shape with vivid pigments and break-resistant bonding. Includes 10 standard colours plus 2 bonus shades. Perfect for young artists who love a touch of fantasy.',
+ 12.90, 60, 'active'),
+
+(1, 10, 'Faber-Castell Dino Edition Classic Colour Pencils 12',
+ 'fc-dino-edition-colour-pencils-12',
+ 'Dino Edition Classic Colour Pencils — a 12-colour set with Faber-Castell''s classic hexagonal shape, vivid pigments and special break-resistant bonding. Includes 10 standard colours and 2 bonus shades in dino-themed packaging that kids will love.',
+ 13.90, 60, 'active');
+
+-- ---------------------------------------------------------------
+-- Product Images — Faber-Castell Stationery products
+-- ---------------------------------------------------------------
+INSERT INTO `product_images` (`product_id`, `image_path`, `is_primary`, `sort_order`) VALUES
+((SELECT id FROM products WHERE slug = 'fc-classic-colour-pencils-12l-slim-flexi'),  'uploads/products/fc-classic-12l-slim-flexi.png', 1, 0),
+((SELECT id FROM products WHERE slug = 'fc-tri-colour-pencils-12l'),                 'uploads/products/fc-tri-colour-12l.png',          1, 0),
+((SELECT id FROM products WHERE slug = 'fc-tri-colour-pencils-24'),                  'uploads/products/fc-tri-colour-24l.png',          1, 0),
+((SELECT id FROM products WHERE slug = 'fc-black-edition-colour-pencils-24'),        'uploads/products/fc-black-edition-24.png',        1, 0),
+((SELECT id FROM products WHERE slug = 'fc-black-edition-colour-pencils-12'),        'uploads/products/fc-black-edition-12.png',        1, 0),
+((SELECT id FROM products WHERE slug = 'fc-grip-colour-pencils-tin-36'),             'uploads/products/fc-grip-tin-36.jpg',             1, 0),
+((SELECT id FROM products WHERE slug = 'fc-unicorn-edition-colour-pencils-12'),      'uploads/products/fc-unicorn-edition-12.jpg',      1, 0),
+((SELECT id FROM products WHERE slug = 'fc-dino-edition-colour-pencils-12'),         'uploads/products/fc-dino-edition-12.jpg',         1, 0);
+
+-- ---------------------------------------------------------------
+-- Product Tags — Faber-Castell Stationery products
+-- ---------------------------------------------------------------
+INSERT INTO `product_tags` (`product_id`, `tag`) VALUES
+((SELECT id FROM products WHERE slug='fc-classic-colour-pencils-12l-slim-flexi'),  'colour-pencils'),
+((SELECT id FROM products WHERE slug='fc-classic-colour-pencils-12l-slim-flexi'),  'faber-castell'),
+((SELECT id FROM products WHERE slug='fc-classic-colour-pencils-12l-slim-flexi'),  'stationery'),
+((SELECT id FROM products WHERE slug='fc-tri-colour-pencils-12l'),                 'colour-pencils'),
+((SELECT id FROM products WHERE slug='fc-tri-colour-pencils-12l'),                 'faber-castell'),
+((SELECT id FROM products WHERE slug='fc-tri-colour-pencils-12l'),                 'kids'),
+((SELECT id FROM products WHERE slug='fc-tri-colour-pencils-24'),                  'colour-pencils'),
+((SELECT id FROM products WHERE slug='fc-tri-colour-pencils-24'),                  'faber-castell'),
+((SELECT id FROM products WHERE slug='fc-tri-colour-pencils-24'),                  'kids'),
+((SELECT id FROM products WHERE slug='fc-black-edition-colour-pencils-24'),        'colour-pencils'),
+((SELECT id FROM products WHERE slug='fc-black-edition-colour-pencils-24'),        'faber-castell'),
+((SELECT id FROM products WHERE slug='fc-black-edition-colour-pencils-24'),        'black-edition'),
+((SELECT id FROM products WHERE slug='fc-black-edition-colour-pencils-12'),        'colour-pencils'),
+((SELECT id FROM products WHERE slug='fc-black-edition-colour-pencils-12'),        'faber-castell'),
+((SELECT id FROM products WHERE slug='fc-black-edition-colour-pencils-12'),        'black-edition'),
+((SELECT id FROM products WHERE slug='fc-grip-colour-pencils-tin-36'),             'colour-pencils'),
+((SELECT id FROM products WHERE slug='fc-grip-colour-pencils-tin-36'),             'faber-castell'),
+((SELECT id FROM products WHERE slug='fc-grip-colour-pencils-tin-36'),             'grip'),
+((SELECT id FROM products WHERE slug='fc-unicorn-edition-colour-pencils-12'),      'colour-pencils'),
+((SELECT id FROM products WHERE slug='fc-unicorn-edition-colour-pencils-12'),      'faber-castell'),
+((SELECT id FROM products WHERE slug='fc-unicorn-edition-colour-pencils-12'),      'special-edition'),
+((SELECT id FROM products WHERE slug='fc-dino-edition-colour-pencils-12'),         'colour-pencils'),
+((SELECT id FROM products WHERE slug='fc-dino-edition-colour-pencils-12'),         'faber-castell'),
+((SELECT id FROM products WHERE slug='fc-dino-edition-colour-pencils-12'),         'special-edition');

@@ -478,12 +478,22 @@
             border-radius: 4px;
         }
 
+        @keyframes input-pulse {
+            0%   { box-shadow: 0 0 0 0px oklch(62% 0.18 33 / 0.55); border-color: var(--border-strong); }
+            40%  { box-shadow: 0 0 0 5px oklch(62% 0.18 33 / 0.30); border-color: var(--primary); }
+            100% { box-shadow: 0 0 0 0px oklch(62% 0.18 33 / 0);    border-color: var(--primary); }
+        }
+        .auth-input--pulse {
+            animation: input-pulse 0.6s ease-out forwards;
+        }
+
         @media (prefers-reduced-motion: reduce) {
             .auth-btn, .auth-back-link, .auth-back-link svg,
             .auth-input, .auth-switch a, .auth-forgot-link, .auth-pw-toggle {
                 transition: none;
             }
             .auth-btn:hover { transform: none; }
+            .auth-input--pulse { animation: none; border-color: var(--primary); }
         }
 
         @media (max-width: 768px) {
@@ -591,6 +601,20 @@
                 if (pwInput) pwInput.value = this.dataset.password;
                 emailInput && emailInput.dispatchEvent(new Event('input'));
                 pwInput && pwInput.dispatchEvent(new Event('input'));
+                [emailInput, pwInput].forEach(function(el) {
+                    if (!el) return;
+                    el.classList.remove('auth-input--pulse');
+                    void el.offsetWidth; // reflow to restart animation
+                    el.classList.add('auth-input--pulse');
+                    el.addEventListener('animationend', function() {
+                        el.classList.remove('auth-input--pulse');
+                    }, { once: true });
+                });
+                if (emailInput) {
+                    setTimeout(function() {
+                        emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 80);
+                }
             });
         });
     }

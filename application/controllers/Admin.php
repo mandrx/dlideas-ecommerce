@@ -128,10 +128,11 @@ class Admin extends MY_Controller
         $offset = ($page - 1) * $limit;
 
         $rows = $this->db
-            ->select('p.*, s.name AS store_name, c.name AS category_name')
+            ->select('p.*, s.name AS store_name, c.name AS category_name, pi.image_path AS primary_image')
             ->from('products p')
             ->join('stores s', 's.id = p.store_id')
             ->join('categories c', 'c.id = p.category_id', 'left')
+            ->join('product_images pi', 'pi.product_id = p.id AND pi.is_primary = 1', 'left')
             ->order_by('p.id', 'DESC')
             ->limit($limit, $offset)
             ->get()->result();
@@ -142,7 +143,18 @@ class Admin extends MY_Controller
             'page_title' => 'All Products',
             'products'   => $rows,
             'total'      => $total,
+            'page'       => $page,
+            'per_page'   => $limit,
         ]);
+    }
+
+    public function delete_product($id)
+    {
+        $product = $this->product_model->find($id);
+        if (!$product) show_error('Product not found.', 404);
+        $this->db->delete('cart_items', ['product_id' => $id]);
+        $this->product_model->delete($id);
+        $this->redirect_with_message('admin/products', 'Product deleted.');
     }
 
     // --- Orders ---

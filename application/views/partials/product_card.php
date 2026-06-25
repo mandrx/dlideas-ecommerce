@@ -14,7 +14,8 @@ $out        = ($product->stock <= 0);
             <span class="dl-badge-low">Only <?= $product->stock ?> left</span>
         <?php endif; ?>
         <img src="<?= $thumb ?>" class="dl-product-img" alt="<?= htmlspecialchars($product->name) ?>"
-             loading="lazy" width="400" height="400">
+             loading="lazy" width="400" height="400"
+             onerror="this.onerror=null;this.src='<?= base_url('assets/img/logo.png') ?>';this.style.opacity='0.15';this.style.objectFit='contain';this.style.padding='2rem'">
         <?php if ($out): ?>
         <div class="dl-product-sold-out" aria-label="Out of stock">
             <span>Out of Stock</span>
@@ -22,6 +23,11 @@ $out        = ($product->stock <= 0);
         <?php endif; ?>
     </a>
     <div class="dl-product-info">
+        <?php if (!empty($show_subcategory) && !empty($product->category_name)): ?>
+        <div class="dl-subcategory-tag">
+            <a href="<?= base_url('shop/' . $product->category_slug) ?>"><?= htmlspecialchars($product->category_name) ?></a>
+        </div>
+        <?php endif; ?>
         <div class="dl-vendor-name">
             <a href="<?= base_url('store/' . $product->store_slug) ?>"><?= htmlspecialchars($product->store_name) ?></a>
         </div>

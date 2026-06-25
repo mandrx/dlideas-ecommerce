@@ -16,7 +16,7 @@
 <?php else: ?>
 <div class="dl-product-grid">
     <?php foreach ($products as $product): ?>
-        <?php $this->load->view('partials/product_card', ['product' => $product]); ?>
+        <?php $this->load->view('partials/product_card', ['product' => $product, 'show_subcategory' => !empty($is_parent) && $product->category_id != $category->id]); ?>
     <?php endforeach; ?>
 </div>
 

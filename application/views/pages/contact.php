@@ -39,7 +39,7 @@
                 </div>
                 <div>
                     <p class="dl-contact-card-label">This form is real</p>
-                    <p class="dl-contact-card-value">Messages go straight to Hafiz's inbox. This is the one part of the site that's fully live.</p>
+                    <p class="dl-contact-card-value">Your message is saved and will be reviewed. This is <strong>real</strong>.</p>
                 </div>
             </div>
 
@@ -69,7 +69,7 @@
         <div class="dl-contact-form-wrap">
             <div class="dl-contact-form-header">
                 <h2>Send a Message</h2>
-                <p>Unlike the rest of this demo, this form is fully wired up. Your message lands in Hafiz's inbox — no middleware, no mock data.</p>
+                <p>This form is <strong>real</strong>. Your message will be saved and reviewed on our end.</p>
             </div>
 
             <form class="dl-contact-form" id="contactForm" method="POST" action="<?= site_url('contact/submit') ?>">

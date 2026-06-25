@@ -15,6 +15,7 @@
 <table class="dl-orders-table dl-categories-table">
     <thead>
         <tr>
+            <th class="col-id">#</th>
             <th class="col-img">Image</th>
             <th>Name</th>
             <th>Slug</th>
@@ -25,6 +26,7 @@
     <tbody>
     <?php foreach ($categories as $cat): ?>
     <tr>
+        <td class="col-id" style="color:var(--text-muted);font-size:0.82rem;"><?= $cat->id ?></td>
         <td class="col-img">
             <div class="dl-cat-thumb">
                 <?php if (!empty($cat->image)): ?>
@@ -56,6 +58,7 @@
 </div>
 
 <style>
+.dl-categories-table .col-id   { width: 48px; }
 .dl-categories-table .col-img  { width: 72px; }
 .dl-categories-table .col-order { width: 100px; text-align: center; color: var(--text-muted); }
 .dl-categories-table .col-actions { width: 140px; }

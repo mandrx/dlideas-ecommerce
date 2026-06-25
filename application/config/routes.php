@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 // Default
-$route['default_controller'] = 'shop';
+$route['default_controller'] = 'shop/home';
 $route['404_override']       = '';
 $route['translate_uri_dashes'] = FALSE;
 

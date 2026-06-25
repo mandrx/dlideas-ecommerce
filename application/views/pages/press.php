@@ -31,11 +31,11 @@
             </div>
             <div class="dl-press-fact">
                 <span class="dl-press-fact-label">Year</span>
-                <span class="dl-press-fact-value">2024</span>
+                <span class="dl-press-fact-value">2026</span>
             </div>
             <div class="dl-press-fact">
                 <span class="dl-press-fact-label">Based in</span>
-                <span class="dl-press-fact-value">Singapore</span>
+                <span class="dl-press-fact-value">Malaysia</span>
             </div>
             <div class="dl-press-fact">
                 <span class="dl-press-fact-label">Type</span>

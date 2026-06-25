@@ -9,9 +9,10 @@ class Product_model extends MY_Model
     public function get_by_store($store_id, $limit = 20, $offset = 0)
     {
         return $this->db
-            ->select('p.*, c.name AS category_name')
+            ->select('p.*, c.name AS category_name, pi.image_path AS primary_image')
             ->from('products p')
             ->join('categories c', 'c.id = p.category_id', 'left')
+            ->join('product_images pi', 'pi.product_id = p.id AND pi.is_primary = 1', 'left')
             ->where('p.store_id', $store_id)
             ->order_by('p.created_at', 'DESC')
             ->limit($limit, $offset)

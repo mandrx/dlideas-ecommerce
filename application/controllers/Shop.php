@@ -11,15 +11,38 @@ class Shop extends MY_Controller
         $this->load->model('store_model');
     }
 
-    public function index()
+    public function home()
     {
-        $featured   = $this->_active_products(8, 0);
+        $products   = $this->_random_products(10);
         $categories = $this->category_model->get_all();
 
-        $this->_render('shop/index', array(
+        $this->_render('shop/home', array(
             'page_title' => 'CI3 Shop — Home',
-            'featured'   => $featured,
+            'products'   => $products,
             'categories' => $categories,
+        ));
+    }
+
+    public function index()
+    {
+        $per_page = 20;
+        $page     = max(1, (int) $this->input->get('page'));
+        $offset   = ($page - 1) * $per_page;
+
+        $products = $this->_active_products($per_page, $offset);
+        $total    = $this->db
+            ->from('products p')
+            ->join('stores s', 's.id = p.store_id')
+            ->where('p.status', PRODUCT_ACTIVE)
+            ->where('s.status', STORE_ACTIVE)
+            ->count_all_results();
+
+        $this->_render('shop/index', array(
+            'page_title' => 'All Products',
+            'products'   => $products,
+            'total'      => $total,
+            'per_page'   => $per_page,
+            'page'       => $page,
         ));
     }
 
@@ -28,7 +51,7 @@ class Shop extends MY_Controller
         $category = $this->category_model->find_where('slug', $slug);
         if (!$category) show_404();
 
-        $per_page = 12;
+        $per_page = 20;
         $page     = max(1, (int) $this->input->get('page'));
         $offset   = ($page - 1) * $per_page;
 
@@ -37,10 +60,11 @@ class Shop extends MY_Controller
         $cat_ids   = array_merge([$category->id], array_column($child_ids, 'id'));
 
         $products = $this->db
-            ->select('p.*, s.name AS store_name, s.slug AS store_slug,
+            ->select('p.*, s.name AS store_name, s.slug AS store_slug, c.name AS category_name, c.slug AS category_slug,
                 (SELECT image_path FROM product_images WHERE product_id=p.id AND is_primary=1 LIMIT 1) AS primary_image')
             ->from('products p')
             ->join('stores s', 's.id = p.store_id')
+            ->join('categories c', 'c.id = p.category_id', 'left')
             ->where_in('p.category_id', $cat_ids)
             ->where('p.status', PRODUCT_ACTIVE)
             ->where('s.status', STORE_ACTIVE)
@@ -57,12 +81,13 @@ class Shop extends MY_Controller
             ->count_all_results();
 
         $this->_render('shop/category', array(
-            'page_title' => $category->name,
-            'category'   => $category,
-            'products'   => $products,
-            'total'      => $total,
-            'per_page'   => $per_page,
-            'page'       => $page,
+            'page_title'       => $category->name,
+            'category'         => $category,
+            'is_parent'        => count($cat_ids) > 1,
+            'products'         => $products,
+            'total'            => $total,
+            'per_page'         => $per_page,
+            'page'             => $page,
         ));
     }
 
@@ -101,7 +126,7 @@ class Shop extends MY_Controller
         $store = $this->store_model->find_by_slug($slug);
         if (!$store) show_404();
 
-        $per_page = 12;
+        $per_page = 20;
         $page     = max(1, (int) $this->input->get('page'));
         $offset   = ($page - 1) * $per_page;
 
@@ -133,7 +158,7 @@ class Shop extends MY_Controller
         ));
     }
 
-    private function _active_products($limit = 12, $offset = 0)
+    private function _active_products($limit = 20, $offset = 0)
     {
         return $this->db
             ->select('p.*, s.name AS store_name, s.slug AS store_slug,
@@ -144,6 +169,20 @@ class Shop extends MY_Controller
             ->where('s.status', STORE_ACTIVE)
             ->order_by('p.created_at', 'DESC')
             ->limit($limit, $offset)
+            ->get()->result();
+    }
+
+    private function _random_products($limit = 10)
+    {
+        return $this->db
+            ->select('p.*, s.name AS store_name, s.slug AS store_slug,
+                (SELECT image_path FROM product_images WHERE product_id=p.id AND is_primary=1 LIMIT 1) AS primary_image')
+            ->from('products p')
+            ->join('stores s', 's.id = p.store_id')
+            ->where('p.status', PRODUCT_ACTIVE)
+            ->where('s.status', STORE_ACTIVE)
+            ->order_by('RAND()')
+            ->limit($limit)
             ->get()->result();
     }
 
