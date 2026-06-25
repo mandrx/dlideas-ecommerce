@@ -6,7 +6,7 @@ class Admin extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->require_role(ROLE_ADMIN);
+        $this->require_role_in([ROLE_ADMIN, ROLE_OWNER]);
         $this->load->model(['user_model', 'store_model', 'product_model', 'order_model', 'review_model', 'coupon_model', 'contact_model', 'category_model', 'visitor_model']);
     }
 

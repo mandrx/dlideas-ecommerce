@@ -10,6 +10,7 @@ USE ci3_ecomm;
 -- Hash: $2y$10$.kRloWjX6vH7s3PpdPPym.PKErlAwlKd3KHK4Ubqzck0ddLOJX1Om
 -- ---------------------------------------------------------------
 INSERT INTO `users` (`email`, `password`, `full_name`, `phone`, `role`, `status`) VALUES
+('mandrx@gmail.com',    '$2y$10$.kRloWjX6vH7s3PpdPPym.PKErlAwlKd3KHK4Ubqzck0ddLOJX1Om', 'Hafiz',          NULL,           'owner',  'active'),
 ('alice@example.com',   '$2y$10$.kRloWjX6vH7s3PpdPPym.PKErlAwlKd3KHK4Ubqzck0ddLOJX1Om', 'Alice Nguyen',   '081234567890', 'seller', 'active'),
 ('bob@example.com',     '$2y$10$.kRloWjX6vH7s3PpdPPym.PKErlAwlKd3KHK4Ubqzck0ddLOJX1Om', 'Bob Rahman',     '082345678901', 'seller', 'active'),
 ('carol@example.com',   '$2y$10$.kRloWjX6vH7s3PpdPPym.PKErlAwlKd3KHK4Ubqzck0ddLOJX1Om', 'Carol Santoso',  '083456789012', 'seller', 'active'),
@@ -139,18 +140,18 @@ INSERT INTO `product_images` (`product_id`, `image_path`, `is_primary`, `sort_or
 -- USB-C Charger (product 2)
 (2, 'uploads/products/gan-charger-main.jpg',  1, 0),
 -- Keyboard (product 3)
-(3, 'uploads/products/keyboard-rgb-main.jpg', 1, 0),
-(3, 'uploads/products/keyboard-rgb-side.jpg', 0, 1),
+(3, 'uploads/products/keyboard-rgb-main.webp', 1, 0),
+(3, 'uploads/products/keyboard-rgb-side.webp', 0, 1),
 -- Chinos (product 6)
-(6, 'uploads/products/chinos-khaki-main.jpg', 1, 0),
+(6, 'uploads/products/chinos-khaki-main.webp', 1, 0),
 (6, 'uploads/products/chinos-navy.jpg',       0, 1),
 -- Sneakers (product 7)
 (7, 'uploads/products/sneakers-main.jpg',     1, 0),
 -- Graphic Tee (product 8)
 (8, 'uploads/products/tee-front.jpg',         1, 0),
-(8, 'uploads/products/tee-back.jpg',          0, 1),
+(8, 'uploads/products/tee-back.webp',          0, 1),
 -- Bullet Journal (product 10)
-(10,'uploads/products/journal-main.jpg',      1, 0);
+(10,'uploads/products/journal-main.webp',      1, 0);
 
 -- ---------------------------------------------------------------
 -- Categories — Sports (parent + sub-categories)
@@ -207,11 +208,11 @@ INSERT INTO `products` (`store_id`, `category_id`, `name`, `slug`, `description`
 -- product IDs referenced by name to handle variable auto-increment
 -- ---------------------------------------------------------------
 INSERT INTO `product_images` (`product_id`, `image_path`, `is_primary`, `sort_order`) VALUES
-((SELECT id FROM products WHERE slug = 'kids-dino-helmet'),    'uploads/products/kids-dino-helmet.jpg',     1, 0),
+((SELECT id FROM products WHERE slug = 'kids-dino-helmet'),    'uploads/products/kids-dino-helmet.webp',     1, 0),
 ((SELECT id FROM products WHERE slug = 'mini-basketball-hoop'),'uploads/products/mini-basketball-hoop.jpg', 1, 0),
-((SELECT id FROM products WHERE slug = 'kids-tennis-set'),     'uploads/products/kids-tennis-set.jpg',      1, 0),
+((SELECT id FROM products WHERE slug = 'kids-tennis-set'),     'uploads/products/kids-tennis-set.webp',      1, 0),
 ((SELECT id FROM products WHERE slug = 'kids-soccer-ball-size-3'), 'uploads/products/kids-soccer-ball.jpg', 1, 0),
-((SELECT id FROM products WHERE slug = 'kids-swim-vest'),      'uploads/products/kids-swim-vest.jpg',       1, 0);
+((SELECT id FROM products WHERE slug = 'kids-swim-vest'),      'uploads/products/kids-swim-vest.webp',       1, 0);
 
 -- ---------------------------------------------------------------
 -- Product Tags — Sports products
@@ -289,14 +290,14 @@ INSERT INTO `products` (`store_id`, `category_id`, `name`, `slug`, `description`
 -- Product Images — Faber-Castell Stationery products
 -- ---------------------------------------------------------------
 INSERT INTO `product_images` (`product_id`, `image_path`, `is_primary`, `sort_order`) VALUES
-((SELECT id FROM products WHERE slug = 'fc-classic-colour-pencils-12l-slim-flexi'),  'uploads/products/fc-classic-12l-slim-flexi.png', 1, 0),
-((SELECT id FROM products WHERE slug = 'fc-tri-colour-pencils-12l'),                 'uploads/products/fc-tri-colour-12l.png',          1, 0),
-((SELECT id FROM products WHERE slug = 'fc-tri-colour-pencils-24'),                  'uploads/products/fc-tri-colour-24l.png',          1, 0),
-((SELECT id FROM products WHERE slug = 'fc-black-edition-colour-pencils-24'),        'uploads/products/fc-black-edition-24.png',        1, 0),
-((SELECT id FROM products WHERE slug = 'fc-black-edition-colour-pencils-12'),        'uploads/products/fc-black-edition-12.png',        1, 0),
-((SELECT id FROM products WHERE slug = 'fc-grip-colour-pencils-tin-36'),             'uploads/products/fc-grip-tin-36.jpg',             1, 0),
-((SELECT id FROM products WHERE slug = 'fc-unicorn-edition-colour-pencils-12'),      'uploads/products/fc-unicorn-edition-12.jpg',      1, 0),
-((SELECT id FROM products WHERE slug = 'fc-dino-edition-colour-pencils-12'),         'uploads/products/fc-dino-edition-12.jpg',         1, 0);
+((SELECT id FROM products WHERE slug = 'fc-classic-colour-pencils-12l-slim-flexi'),  'uploads/products/fc-classic-12l-slim-flexi.webp', 1, 0),
+((SELECT id FROM products WHERE slug = 'fc-tri-colour-pencils-12l'),                 'uploads/products/fc-tri-colour-12l.webp',          1, 0),
+((SELECT id FROM products WHERE slug = 'fc-tri-colour-pencils-24'),                  'uploads/products/fc-tri-colour-24l.webp',          1, 0),
+((SELECT id FROM products WHERE slug = 'fc-black-edition-colour-pencils-24'),        'uploads/products/fc-black-edition-24.webp',        1, 0),
+((SELECT id FROM products WHERE slug = 'fc-black-edition-colour-pencils-12'),        'uploads/products/fc-black-edition-12.webp',        1, 0),
+((SELECT id FROM products WHERE slug = 'fc-grip-colour-pencils-tin-36'),             'uploads/products/fc-grip-tin-36.webp',             1, 0),
+((SELECT id FROM products WHERE slug = 'fc-unicorn-edition-colour-pencils-12'),      'uploads/products/fc-unicorn-edition-12.webp',      1, 0),
+((SELECT id FROM products WHERE slug = 'fc-dino-edition-colour-pencils-12'),         'uploads/products/fc-dino-edition-12.webp',         1, 0);
 
 -- ---------------------------------------------------------------
 -- Product Tags — Faber-Castell Stationery products

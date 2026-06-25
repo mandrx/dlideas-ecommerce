@@ -1668,6 +1668,164 @@ img { max-width: 100%; display: block; }
 .dl-status-badge--delivered  { background: var(--success-light); color: var(--success); }
 .dl-status-badge--cancelled  { background: var(--bg-subtle);     color: var(--text-muted); }
 .dl-status-badge--refunded   { background: var(--danger-light);  color: var(--danger); }
+.dl-status-badge--bot        { background: oklch(95% 0.07 80);   color: oklch(44% 0.14 80); }
+.dl-status-badge--human      { background: var(--success-light); color: var(--success); }
+
+/* ===== VISITOR ANALYTICS ===== */
+.dl-visitors-countries {
+    margin-bottom: var(--space-6);
+}
+
+.dl-section-title {
+    font-family: 'Baloo 2', 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin: 0 0 var(--space-3);
+}
+
+.dl-visitors-country-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    max-width: 480px;
+}
+
+.dl-visitors-country-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-5);
+    border-bottom: 1px solid var(--border);
+}
+
+.dl-visitors-country-row:last-child { border-bottom: none; }
+
+.dl-visitors-country-rank {
+    font-family: 'Baloo 2', 'Nunito', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 900;
+    color: var(--text-light);
+    width: 20px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.dl-visitors-country-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    flex: 1;
+}
+
+.dl-visitors-country-count {
+    font-family: 'Baloo 2', 'Nunito', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+/* Filter bar */
+.dl-filter-bar {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    align-items: flex-end;
+    margin-bottom: var(--space-5);
+}
+
+.dl-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dl-filter-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.dl-filter-actions {
+    display: flex;
+    gap: var(--space-2);
+    align-items: flex-end;
+}
+
+.dl-btn-sm {
+    padding: 6px 16px;
+    font-size: 0.85rem;
+}
+
+/* Table meta row */
+.dl-table-meta {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: var(--space-3);
+}
+
+/* Table empty state */
+.dl-table-empty {
+    text-align: center;
+    color: var(--text-muted);
+    padding: var(--space-7) !important;
+    font-size: 0.9rem;
+}
+
+/* Visitor table cell helpers */
+.dl-visitors-time {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.dl-visitors-ip {
+    font-family: ui-monospace, 'Cascadia Code', monospace;
+    font-size: 0.83rem;
+    color: var(--text-dark);
+}
+
+.dl-visitors-country { font-size: 0.87rem; }
+
+.dl-visitors-country-code {
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    margin-left: 4px;
+}
+
+.dl-visitors-uri {
+    font-size: 0.82rem;
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-dark);
+}
+
+.dl-visitors-uri-slash {
+    color: var(--text-light);
+    margin-right: 1px;
+}
+
+.dl-visitors-user {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.dl-text-muted { color: var(--text-muted); }
+
+/* Pagination wrapper */
+.dl-pagination-wrap {
+    margin-top: var(--space-5);
+}
 
 /* ===== ORDERS TABLE ===== */
 .dl-orders-table {
