@@ -150,6 +150,7 @@ class Admin extends MY_Controller
 
     public function delete_product($id)
     {
+        if ($this->input->method(TRUE) !== 'POST') show_error('Method Not Allowed', 405);
         $product = $this->product_model->find($id);
         if (!$product) show_error('Product not found.', 404);
         $this->db->delete('cart_items', ['product_id' => $id]);
